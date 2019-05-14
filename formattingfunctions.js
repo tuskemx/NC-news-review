@@ -8,34 +8,35 @@ const formatDate = (input) => {
 }
 
 
-const createRef = (data) => {
-    const newObj = data.reduce((obj, item) => {
-        obj[item.forename] = item.owner_id;
-        return obj;
-    }, {})
+//reduce article to title:id
+function createRef(arr, key, value) {
+    const refObj = {};
+    arr.forEach((item) => {
+      refObj[item[key]] = item[value];
+    });
+    return refObj;
+  }
 
-    return newObj
-
-}
-
-// const formatComments = (a, b) => {
-//     (shops, valuePair) => {
-//         const newShops = shops.map(function (shop) {
-//             const newShop = { ...shop }
-//             newShop.owner_id = valuePair[shop.owner]
-//             delete newShop.owner
-//             return newShop;
-//         });
-
-//         return newShops;
-
-//     }
-// }
+  function formatComments(commentsArr, articleRef) {
+    const newArr = [];
+    commentsArr.forEach(((comment) => {
+      newArr.push({
+        author: comment.created_by,
+        article_id: articleRef[comment.belongs_to],
+        votes: comment.votes,
+        created_at: comment.created_at,
+        body: comment.body,
+      });
+    }));
+    return newArr;
+  }
 //object keys
 //ref object
 //format comment obj
 
 
 module.exports = {
-    formatDate
+    formatDate,
+    createRef,
+    formatComments
 }
