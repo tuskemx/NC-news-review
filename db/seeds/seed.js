@@ -8,30 +8,27 @@ exports.seed = function (knex, Promise) {
   return knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
-    .then(() => {
-      const topicInsertions = knex('topics')
-        .insert(topicData)
-        .returning('*');
-      const userInsertions = knex('users')
-        .insert(userData)
-        .returning('*');
-      return Promise.all([topicInsertions, userInsertions]);
-    })
-    .then(([topicInsertions, userInsertions]) => {
-      const articleInsertions = knex('articles')
-        .insert(formatDate(articleData))
-        .returning('*');
-      return Promise.all([topicInsertions, userInsertions, articleInsertions]);
-    })
-    .then(([topicInsertions, userInsertions, articleInsertions]) => {
-      const commentInsertions = knex('comments')
-        .insert(formatComments(formatDate(commentData), createRef(articleInsertions, 'title', 'article_id')))
-        .returning('*');
-      return Promise.all([topicInsertions, userInsertions, articleInsertions, commentInsertions]);
+    .then(() => knex('topics')
+      .insert(topicData)
+      .returning('*'))
+    .then(() => knex('users')
+      .insert(userData)
+      .returning('*'))
+    .then(() => knex('articles')
+      .insert(formatDate(articleData))
+      .returning('*'))
+    .then((articleRows) => {
+      const articleRef = createRef(articleRows, 'title', 'article_id');
+      const formattedComments = formatComments(commentData, articleRef);
+      const dateComments = formatDate(formattedComments);
+      console.log(dateComments);
+      const insertedComments = knex('comments')
+        .insert(dateComments)
+          .returning('*');
+
+      return Promise.all([articleRows, insertedComments]);
     });
 };
-
-
 // const commentInsert = knex('comments')
 //   .insert(formatDate(commentData))
 //   .returning('*');

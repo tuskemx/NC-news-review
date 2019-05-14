@@ -17,15 +17,15 @@ function createRef(arr, key, value) {
     return refObj;
   }
 
-  function formatComments(commentsArr, articleRef) {
+  function formatComments(commArray, articleRef) {
     const newArr = [];
-    commentsArr.forEach(((comment) => {
+    commArray.forEach(((comm) => {
       newArr.push({
-        author: comment.created_by,
-        article_id: articleRef[comment.belongs_to],
-        votes: comment.votes,
-        created_at: comment.created_at,
-        body: comment.body,
+        author: comm.created_by,
+        article_id: articleRef[comm.belongs_to],
+        votes: comm.votes,
+        created_at: comm.created_at,
+        body: comm.body,
       });
     }));
     return newArr;
