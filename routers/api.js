@@ -1,5 +1,10 @@
 const apiRouter = require('express').Router();
-const { methodNotAllowed } = require('../errors');
+const articlesRouter = require('../routers/articlesRouter');
+
+
+
+apiRouter.use('/articles', articlesRouter);
+
 
 apiRouter
   .route('/')
