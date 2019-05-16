@@ -30,6 +30,19 @@ function createRef(arr, key, value) {
     }));
     return newArr;
   }
+
+
+const dateRemoveLetters = (str) => {
+  let myString = str.replace(/\D/g, '');
+  let res = Number(myString);
+  console.log(res);
+  const timeMap = input.map((obj) => {
+    const newObj = { ...obj, created_at: res };
+    return newObj;
+
+  })
+  return timeMap;
+};
 //object keys
 //ref object
 //format comment obj
@@ -38,5 +51,6 @@ function createRef(arr, key, value) {
 module.exports = {
     formatDate,
     createRef,
-    formatComments
+    formatComments,
+    dateRemoveLetters
 }
