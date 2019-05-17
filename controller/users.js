@@ -9,7 +9,7 @@ exports.getUsers = (req, res, next) => {
         .then((user) => {
             console.log(user);
             if (!user) {
-                res.status(404).send({ msg: 'USER NOT FOUND' })
+                return Promise.reject(status(404).send({ msg: 'USER NOT FOUND' }))
             } else res.status(200).send({
                 articles
             })
