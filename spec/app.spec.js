@@ -151,7 +151,7 @@ describe('/api', () => {
                 })
         })
     });
-    describe.only('/articles/:article_id/comments', () => {
+    describe('/articles/:article_id/comments', () => {
         it('POST accepts object with username and body property and res with posted comment', () => {
             return request(app)
                 .patch('/api/articles/2/comments')
@@ -161,8 +161,7 @@ describe('/api', () => {
                 })
                 .expect(200)
                 .then((result) => {
-                    console.log(result);
-                    console.log(result.body[0]);
+                 console.log(result.body);
                     expect(result.body).to.have.keys('comm');
                     // no article id 
 

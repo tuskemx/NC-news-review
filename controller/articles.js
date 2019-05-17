@@ -3,7 +3,7 @@ const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postC
 exports.getArticles = (req, res, next) => {
     fetchArticles(req.query)
         .then((articles) => {
-            if (articles === undefined) {
+            if (!articles) {
                 res.status(404).send({ msg: 'Articles Not Found' })
             } else res.status(200).send({
                 articles
@@ -30,9 +30,6 @@ exports.updateArticleCont = (req, res, next) => {
         .catch(console.log);
 };
 
-
-
-
 exports.getcommentsByID = (req, res, next) => {
 
     const id = req.params; //destructure id?
@@ -46,15 +43,16 @@ exports.getcommentsByID = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
-    console.log("HELLLLLLLLLLLLLLLLO")
+
 
     const { article_id } = req.params;
-    console.log(article_id);
+    //give req.body article id?
+
     postCommentModel(req.body, article_id)
         .then((comm) => {
-            console.log(comm);
-            return res.status(200).send({comm});
-        }).catch(console.log);
+
+            return res.status(200).send({ comm });
+        }).catch(next);
 }
 
 
