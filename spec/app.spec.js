@@ -152,7 +152,7 @@ describe('/api', () => {
         })
     });
     describe('/articles/:article_id/comments', () => {
-        it('POST accepts object with username and body property and res with posted comment', () => {
+        it('Patch accepts object with username and body property and res with posted comment', () => {
             return request(app)
                 .patch('/api/articles/2/comments')
                 .send({
@@ -163,6 +163,24 @@ describe('/api', () => {
                 .then((result) => {
                  
                     expect(result.body).to.have.keys('comm');
+                    expect(result.body.comm[0].article_id).to.eql(2);
+                    // no article id 
+
+                });
+        });
+
+    })
+    describe('/comments/:comment_id', () => {
+        it('POST accepts object with username and body property and res with posted comment', () => {
+            return request(app)
+                .patch('/api/comments/3')
+                .send({
+                    inc_votes : 500
+                })
+                .expect(200)
+                .then((result) => {
+                 
+                    console.log(result.body[0].votes);
                     expect(result.body.comm[0].article_id).to.eql(2);
                     // no article id 
 
