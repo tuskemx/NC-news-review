@@ -161,7 +161,7 @@ describe('/api', () => {
                 })
                 .expect(200)
                 .then((result) => {
-                 
+
                     expect(result.body).to.have.keys('comm');
                     expect(result.body.comm[0].article_id).to.eql(2);
                     // no article id 
@@ -171,24 +171,37 @@ describe('/api', () => {
 
     })
     describe('/comments/:comment_id', () => {
-        it('POST accepts object with username and body property and res with posted comment', () => {
+        it('Patch accepts object with username and body property and res with posted comment', () => {
             return request(app)
                 .patch('/api/comments/3')
                 .send({
-                    inc_votes : 500
+                    inc_votes: 500
                 })
                 .expect(200)
                 .then((result) => {
-                 
-                    console.log(result.body[0].votes);
-                    expect(result.body.comm[0].article_id).to.eql(2);
+
+                    console.log(result.body.comment.votes);
+                    expect(result.body.comment.votes).to.eql(600);
                     // no article id 
 
                 });
         });
+    });// accepts queries
+    describe('/comments/:comment_id', () => {
+        it('Patch accepts object with username and body property and res with posted comment', () => {
+            return request(app)
+                .delete('/api/comments/3')
+                .expect(204)
+                .then((result) => {
 
-    })
-    // accepts queries
+                    console.log(result.body);
+                    expect(result.body).to.eql({});
+                    // no article id 
+
+                });
+        });
+    });
+
 });
 
 

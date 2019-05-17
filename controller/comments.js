@@ -1,14 +1,30 @@
-const updateComment = require('../models/comments');
+const { updateComment, deleteCommentModel } = require('../models/comments');
 
 
 exports.patchComment = (req, res, next) => {
-    console.log(req.body);
-    console.log(req.params.comment_id)
-    updateComment(req.body, req.params.comment_id)
+
+
+    updateComment(req.body.inc_votes, req.params.comment_id)
         .then(([comment]) => {
+            console.log(comment);
             if (!comment) return Promise.reject({ status: 404 });
             return res.status(200).send({ comment });
         })
-        .catch(console.log);
+        .catch(next);
 };
+
+exports.deleteComment = (req, res, next) => {
+
+    deleteCommentModel(req.params.comment_id)
+        .then((deleteRow) => {
+            if (!deleteRow) return Promise.reject({ status: 404 });
+            return res.status(204).send();
+        })
+        .catch(console.log);
+}
+
+
+
+
+
 
