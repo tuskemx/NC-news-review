@@ -26,13 +26,15 @@ exports.fetchArticles = ({
 
 };
 
-exports.fetchArticleByID = (params) => connection
-    .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
-    .from('articles')
-    .leftJoin('comments', 'comments.article_id', 'articles.article_id')
-    .groupBy('articles.article_id', 'comments.comment_id')
-    .where('articles.article_id', params)
-    .count({ comment_count: 'comments.comment_id' });
+exports.fetchArticleByID = (id) => {
+    return connection
+        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
+        .from('articles')
+        .leftJoin('comments', 'comments.article_id', 'articles.article_id')
+        .groupBy('articles.article_id', 'comments.comment_id')
+        .where('articles.article_id', id)
+        .count({ comment_count: 'comments.comment_id' });
+};
 
 exports.updateArticle = (inc_votes, article_id) => {
     return connection('articles')
@@ -41,21 +43,39 @@ exports.updateArticle = (inc_votes, article_id) => {
         .returning('*');
 };
 
-// .leftJoin('comments', 'comments.article_id', 'articles.article_id')
-// .where({ 'articles.article_id' : params })
-// .groupBy('article.article_id')
-// .count({ 'coment_count': 'comments.comment_id});
-
-// exports.fetchArticleByID = ({ article_id }) => {
-//     return knex('articles')
-//       .select('articles.*')
-//       .leftJoin('comments', 'comments.article_id', 'articles.article_id')
-//       .where({ 'articles.article_id': article_id })
-//       .groupBy('articles.article_id')
-//       .count({
 
 
+exports.fetchcommentsByID = (
+    id, /*remember to call in contr with vars*/
+    sort_by = 'created_at',
+    order = 'desc') => {
+    return connection
+        .select('comments.comment_id', 'comments.votes', 'comments.created_at', 'comments.author', 'comments.body', 'comments.article_id')
+        .from('comments')
+        .where('comments.article_id', id.article_id)
+        .modify((query) => {
+            query.orderBy('comments.' + `${sort_by}`, order || 'asc')
+        });
+};
+
+exports.postCommentModel = (req, article_id) => {
+    //destructure
+    return connection('comments')
+        .insert({ req })
+        .where(article_id, 'comment.article_id')  //to do
+        .returning('*');
+};
 
 
 
-//
+
+
+
+
+
+
+
+
+
+
+

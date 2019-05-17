@@ -7,6 +7,7 @@ const {
 const app = require('../app');
 const request = require('supertest');
 const connection = require('../db/connection')
+const { dateRemoveLetters } = require('../formattingfunctions')
 
 chai.use(chaiSorted);
 
@@ -57,12 +58,12 @@ describe('/api', () => {
         });
     });
     describe('/articles', () => {
-        it('GET: author query sorts by user value', () => {
+        it('GET: author query sorts by default value', () => {
             return request(app)
                 .get('/api/articles')
                 .expect(200)
                 .then((result) => {
-                    expect(result.body.articles[0].created_at).to.lessThan(result.body.articles[1].created_at);
+                    expect(dateRemoveLetters(result.body.articles[0].created_at)).to.greaterThan(dateRemoveLetters(result.body.articles[21].created_at));
                 });
         });
     });
@@ -72,7 +73,6 @@ describe('/api', () => {
                 .get('/api/articles?sort_by=comment_count')
                 .expect(200)
                 .then((result) => {
-                    console.log(result.body);
                     const len = result.body.articles.length - 1;
                     expect(Number(result.body.articles[0].comment_count)).to.greaterThan(Number(result.body.articles[len].comment_count));
                 });
@@ -84,7 +84,7 @@ describe('/api', () => {
                 .get('/api/articles?topic=cats')
                 .expect(200)
                 .then((result) => {
-                    console.log(result.body);
+
                     expect(result.body.articles[0].topic).to.eql(result.body.articles[1].topic);
                 });
         });
@@ -105,6 +105,7 @@ describe('/api', () => {
                         'votes',
                         'comment_count',
                     );
+
                     expect(response.body.article.article_id).to.equal(2);
                 })
         })
@@ -113,18 +114,62 @@ describe('/api', () => {
         it('PATCH: should respond vote incremented article object', () => {
             return request(app)
                 .patch('/api/articles/1')
-                .send({ inc_votes: 1 })
+                .send({ inc_votes: 5 })
                 .expect(200)
                 .then((result) => {
-                    
-                    console.log(result.body.article.votes);
                     expect(result.body.article.article_id).to.eql(1);
-                    expect(result.body.article.votes).to.eql(101);
+                    expect(result.body.article.votes).to.eql(105);
                 });
         });
 
     })
+    describe('/articles/:article_id/comments', () => {
+        it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
+            return request(app)
+                .get('/api/articles/5/comments')
+                .expect(200)
+                .then((res) => {
+
+                    expect(res.body.length).to.equal(2);
+                    expect(res.body[0]).to.contain.keys('comment_id', 'author', 'votes', 'created_at', 'body', 'article_id');
+                    expect(res.body[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
+                })
+        })
+    });
+    describe('/articles/:article_id/comments', () => {
+        it('GET status: 200. tests queries for comments when given article_id', () => {
+            return request(app)
+                .get('/api/articles/1/comments?sort_by=votes&order=asc')
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.length).to.equal(13);
+                    const len = res.body.length;
+                    expect(res.body[0].votes).to.be.lessThan(res.body[len - 1].votes)
+                    expect(res.body[1].votes).to.be.lessThan(res.body[len - 1].votes)
+                    expect(res.body[5].votes).to.be.lessThan(res.body[len - 1].votes)
+                    expect(res.body[6].votes).to.be.lessThan(res.body[len - 3].votes)
+                })
+        })
+    });
+    describe.only('/articles/:article_id/comments', () => {
+        it('POST accepts object with username and body property and res with posted comment', () => {
+            return request(app)
+                .patch('/api/articles/2/comments')
+                .send({
+                    author: 'icellusedkars',
+                    body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
+                })
+                .expect(200)
+                .then((result) => {
+                    expect(result.body.article.comments).to.eql('?');
+
+                });
+        });
+
+    })
+    // accepts queries
 });
+
 
 
 
