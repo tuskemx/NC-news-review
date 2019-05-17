@@ -20,7 +20,7 @@ exports.deleteComment = (req, res, next) => {
             if (!deleteRow) return Promise.reject({ status: 404 });
             return res.status(204).send();
         })
-        .catch(console.log);
+        .catch(next);
 }
 
 
