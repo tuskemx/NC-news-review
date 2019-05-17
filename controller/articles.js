@@ -53,7 +53,7 @@ exports.postComment = (req, res, next) => {
     postCommentModel(req.body, article_id)
         .then((comm) => {
             console.log(comm);
-            return res.status(200).send({ comm });
+            return res.status(200).send({comm});
         }).catch(console.log);
 }
 

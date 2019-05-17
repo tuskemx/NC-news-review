@@ -161,7 +161,10 @@ describe('/api', () => {
                 })
                 .expect(200)
                 .then((result) => {
-                    expect(result.body.article.comments).to.eql('?');
+                    console.log(result);
+                    console.log(result.body[0]);
+                    expect(result.body).to.have.keys('comm');
+                    // no article id 
 
                 });
         });

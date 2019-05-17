@@ -60,9 +60,10 @@ exports.fetchcommentsByID = (
 
 exports.postCommentModel = (req, article_id) => {
     //destructure
+    console.log(req);
     return connection('comments')
-        .insert({ req })
-        .where(article_id, 'comment.article_id')  //to do
+        // .where(article_id, 'comments.article_id')
+        .insert(req) //to do
         .returning('*');
 };
 
