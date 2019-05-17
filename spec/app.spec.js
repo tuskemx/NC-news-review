@@ -161,8 +161,9 @@ describe('/api', () => {
                 })
                 .expect(200)
                 .then((result) => {
-                 console.log(result.body);
+                 
                     expect(result.body).to.have.keys('comm');
+                    expect(result.body.comm[0].article_id).to.eql(2);
                     // no article id 
 
                 });
