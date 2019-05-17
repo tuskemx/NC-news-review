@@ -5,6 +5,7 @@ const { fetchUsersModel } = require('../models/users');
 
 exports.getUsers = (req, res, next) => {
     console.log('hello');
+    console.log(req.query);
     fetchUsersModel(req.query)
         .then((user) => {
             console.log(user);
