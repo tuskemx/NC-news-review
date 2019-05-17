@@ -201,6 +201,20 @@ describe('/api', () => {
                 });
         });
     });
+    describe('/users/:username', () => {
+        it('GET request to users which responds with username, avatar_url and name', () => {
+            return request(app)
+                .delete('/users/mitch')
+                .expect(200)
+                .then((result) => {
+
+                    console.log(result.body);
+                    expect(result.body).to.eql('test');
+                    // no article id 
+
+                });
+        });
+    });
 
 });
 
