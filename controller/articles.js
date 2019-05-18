@@ -3,10 +3,8 @@ const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postC
 exports.getArticles = (req, res, next) => {
     fetchArticles(req.query)
         .then((articles) => {
-            if (!articles) {
-                res.status(404).send({ msg: 'Articles Not Found' })
-            } else res.status(200).send({articles})
-
+            if (articles.length > 0) res.status(200).send({ articles })
+            else res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
         }).catch(next);
 };
 
@@ -24,8 +22,8 @@ exports.updateArticleCont = (req, res, next) => {
         .then(([article]) => {
             if (!article || article === undefined) {
                 res.status(404).send({ msg: 'Article Not Found' });
-            } else 
-            return res.status(200).send({ article });
+            } else
+                return res.status(200).send({ article });
         })
         .catch(next);
 };

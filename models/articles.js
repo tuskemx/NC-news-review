@@ -21,6 +21,7 @@ exports.fetchArticles = ({
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
             if (topic) query.where('articles.topic', topic);
+            
         });
     //regex it to a number
 

@@ -83,7 +83,7 @@ describe('/api', () => {
             return request(app)
                 .get('/api/articles?topic=mitch')
                 .expect(200)
-                .then(({body}) => {
+                .then(({ body }) => {
                     expect(body.articles[0].topic).to.eql(body.articles[1].topic);
                 });
         });
@@ -94,11 +94,11 @@ describe('/api', () => {
                 .get('/api/articles?author=not-an-author')
                 .expect(404)
                 .then(({ body }) => {
-                    expect(body.msg).to.eql('Page not found');
-                  });
+                    expect(body.msg).to.eql('Articles Not Found');
                 });
         });
-    
+    });
+
     // should accept queries sort_by / order / author / topic
     describe('/api/:articles_id', () => {
         it("responds to GET requests with a single article and comment count", () => {
@@ -214,7 +214,7 @@ describe('/api', () => {
     describe('/users', () => {
         it('GET: should respond with all user records, as array of objects', () => {
             return request(app)
-            .get('/api/users')
+                .get('/api/users')
                 .expect(200)
                 .then(({ body }) => {
                     console.log(body);
