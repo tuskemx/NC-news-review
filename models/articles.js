@@ -38,7 +38,11 @@ exports.fetchArticleByID = (id) => {
 };
 
 exports.updateArticle = (inc_votes, article_id) => {
-    return connection('articles')
+  console.log(typeof inc_votes);
+    if (!inc_votes) {
+        inc_votes = 0; 
+    };
+        return connection('articles')
         .where({ article_id })
         .increment('votes', inc_votes)
         .returning('*');

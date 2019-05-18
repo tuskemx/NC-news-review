@@ -234,7 +234,6 @@ describe('/api', () => {
                 .get('/api/users/butter_bridge')
                 .expect(200)
                 .then((response) => {
-                    
                     expect(response.body.user).to.be.an('object');
                     expect(response.body.user.username).to.eql('butter_bridge');
                     expect(response.body.user.name).to.eql('jonny');
