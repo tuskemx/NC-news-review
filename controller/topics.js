@@ -3,6 +3,7 @@ const { fetchTopics, modelinsertTopic } = require('../models/topics')
 const getTopics = (req, res, next) => {
   fetchTopics()
     .then((topics) => {
+      if (!topics) return Promise.reject({ status: 404 });
       return res.status(200).send({
         topics
       })
@@ -12,8 +13,11 @@ const getTopics = (req, res, next) => {
 
 const continsertTopic = (req, res, next) => modelinsertTopic(req, res)
   .then(([postedTopic]) => {
-    res.status(201).send({ postedTopic });
-  })
+    if (!postedTopic) return Promise.reject({ status: 404 });
+    return res.status(201).send({
+      postedTopic
+    });
+  }).catch(next);
 
 // exports.sendTopics = (req, res, next) => {
 //   fetchTopics()

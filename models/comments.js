@@ -4,7 +4,7 @@ exports.updateComment = (inc_votes, comment_id) => {
   console.log(inc_votes);
   console.log(comment_id);
   return connection('comments')
-    .where('comments.comment_id', '3')
+    .where('comments.comment_id', comment_id)
     .increment('votes', inc_votes)
     .returning('*');
 };

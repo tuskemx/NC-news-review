@@ -5,14 +5,19 @@ const { handle405 } = require('../errors/index');
 
 
 
-articleRouter.route('/').get(getArticles);
+articleRouter.route('/')
+    .get(getArticles)
+    // .all(handle405);
 
-articleRouter.route('/:article_id').get(getArticleByID).patch(updateArticleCont);
+articleRouter.route('/:article_id')
+    .get(getArticleByID)
+    .patch(updateArticleCont)
+    // .all(handle405);
 
 articleRouter.route('/:article_id/comments')
-    .get(getcommentsByID).patch(postComment)        // comments controller 
-
-// .all handle404
+    .get(getcommentsByID)
+    .patch(postComment)
+    // .all(handle405);
 
 
 

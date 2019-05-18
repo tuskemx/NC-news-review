@@ -13,12 +13,10 @@ apiRouter.use('/articles', articleRouter);
 apiRouter.use('/comments', commentRouter);
 apiRouter.use('/users', usersRouter);
 
+// apiRouter.route('/')
+//     .all(handle405);
 
 
-apiRouter.route('')
-  .get((req, res, next) => {
-    res.status(200)
-  })
-  .all(handle405);
+
 
 module.exports = apiRouter;

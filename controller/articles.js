@@ -5,17 +5,15 @@ exports.getArticles = (req, res, next) => {
         .then((articles) => {
             if (!articles) {
                 res.status(404).send({ msg: 'Articles Not Found' })
-            } else res.status(200).send({
-                articles
-            })
+            } else res.status(200).send({articles})
 
-        })
+        }).catch(next);
 };
 
 exports.getArticleByID = (req, res, next) =>
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
-            if (article === undefined) {
+            if (!article || article === undefined) {
                 res.status(404).send({ msg: 'Article Not Found' });
             } else res.status(200).send({ article });
         })
@@ -24,10 +22,12 @@ exports.getArticleByID = (req, res, next) =>
 exports.updateArticleCont = (req, res, next) => {
     updateArticle(req.body.inc_votes, req.params.article_id)
         .then(([article]) => {
-
+            if (!article || article === undefined) {
+                res.status(404).send({ msg: 'Article Not Found' });
+            } else 
             return res.status(200).send({ article });
         })
-        .catch(console.log);
+        .catch(next);
 };
 
 exports.getcommentsByID = (req, res, next) => {

@@ -15,8 +15,8 @@ exports.fetchArticles = ({
         .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
         .from('articles')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
-        .groupBy('articles.article_id', 'comments.comment_id')
         .count({ comment_count: 'comments.comment_id' })
+        .groupBy('articles.article_id')
         .modify((query) => {
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);

@@ -34,7 +34,7 @@ describe('/api', () => {
                 .expect(200)
                 .then((result) => {
                     expect(result.body.articles).to.be.an('array');
-                    expect(result.body.articles).to.have.lengthOf(26);
+                    expect(result.body.articles).to.have.lengthOf(12);
                     expect(result.body.articles[0]).to.have.keys(
                         'author',
                         'title',
@@ -63,7 +63,7 @@ describe('/api', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then((result) => {
-                    expect(dateRemoveLetters(result.body.articles[0].created_at)).to.greaterThan(dateRemoveLetters(result.body.articles[21].created_at));
+                    expect(dateRemoveLetters(result.body.articles[0].created_at)).to.greaterThan(dateRemoveLetters(result.body.articles[5].created_at));
                 });
         });
     });
@@ -81,14 +81,24 @@ describe('/api', () => {
     describe('/articles', () => {
         it('GET: author query sorts by user value topic', () => {
             return request(app)
-                .get('/api/articles?topic=cats')
+                .get('/api/articles?topic=mitch')
                 .expect(200)
-                .then((result) => {
-
-                    expect(result.body.articles[0].topic).to.eql(result.body.articles[1].topic);
+                .then(({body}) => {
+                    expect(body.articles[0].topic).to.eql(body.articles[1].topic);
                 });
         });
     });
+    describe('/articles', () => {
+        it('GET: query for author that doenst exist should 404', () => {
+            return request(app)
+                .get('/api/articles?author=not-an-author')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).to.eql('Page not found');
+                  });
+                });
+        });
+    
     // should accept queries sort_by / order / author / topic
     describe('/api/:articles_id', () => {
         it("responds to GET requests with a single article and comment count", () => {
@@ -137,7 +147,7 @@ describe('/api', () => {
         })
     });
     describe('/articles/:article_id/comments', () => {
-        it('GET status: 200. tests queries for comments when given article_id', () => {
+        it('GET: articles comments query sorts by given query', () => {
             return request(app)
                 .get('/api/articles/1/comments?sort_by=votes&order=asc')
                 .expect(200)
@@ -171,7 +181,7 @@ describe('/api', () => {
 
     })
     describe('/comments/:comment_id', () => {
-        it('Patch accepts object with username and body property and res with posted comment', () => {
+        it('Patch increments vote based on objet key value', () => {
             return request(app)
                 .patch('/api/comments/3')
                 .send({
@@ -188,7 +198,7 @@ describe('/api', () => {
         });
     });// accepts queries
     describe('/comments/:comment_id', () => {
-        it('Patch accepts object with username and body property and res with posted comment', () => {
+        it('DELETE comment based on id given', () => {
             return request(app)
                 .delete('/api/comments/3')
                 .expect(204)
@@ -201,16 +211,29 @@ describe('/api', () => {
                 });
         });
     });
-    describe('/users/:username', () => {
-        it('GET request to users which responds with username, avatar_url and name', () => {
+    describe('/users', () => {
+        it('GET: should respond with all user records, as array of objects', () => {
             return request(app)
-                .delete('/users/mitch')
+            .get('/api/users')
                 .expect(200)
-                .then((result) => {
+                .then(({ body }) => {
+                    console.log(body);
+                    expect(body.users).to.be.an('array');
+                    expect(body.users[0].username).to.eql('butter_bridge');
+                    expect(body.users).to.have.length(4);
+                });
+        });
+    });
 
-                    console.log(result.body);
-                    expect(result.body).to.eql('test');
-                    // no article id 
+    describe('/users/:username', () => {
+        it('GET should respond with relevant user object, based on request username', () => {
+            return request(app)
+                .get('/api/users/butter_bridge')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).to.be.an('object');
+                    expect(body.user.username).to.eql('butter_bridge');
+                    expect(body.user.name).to.eql('jonny');
 
                 });
         });
@@ -219,9 +242,3 @@ describe('/api', () => {
 });
 
 
-
-
-
-    //desc / it / return request(app).delete('/api/house/invalid_id_format).expect(400)
-    //.then({body}) => {
-        //expect(body.msg).to.equal('bad request')
