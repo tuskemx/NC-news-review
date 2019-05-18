@@ -60,13 +60,12 @@ exports.fetchcommentsByID = (
 };
 
 exports.postCommentModel = (req, article_id) => {
-    //destructure
-    //function to assign req an article id?
+
     const newReq = { author: req.author, body: req.body, article_id: article_id }
-    // works is it right?
+    
     return connection('comments')
-        // .where(article_id, 'comments.article_id')
-        .insert(newReq) //to do
+    
+        .insert(newReq)
         .returning('*');
 };
 

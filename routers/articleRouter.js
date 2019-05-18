@@ -16,7 +16,7 @@ articleRouter.route('/:article_id')
 
 articleRouter.route('/:article_id/comments')
     .get(getcommentsByID)
-    .patch(postComment)
+    .post(postComment)
     // .all(handle405);
 
 

@@ -35,21 +35,21 @@ exports.getcommentsByID = (req, res, next) => {
     const order = req.query.order;
     console.log(id);
     fetchcommentsByID(id, sortBy, order).then((comments) => {
-
-        res.status(200).send(comments);
+        if (!comments || comments === undefined) {
+            res.status(404).send({ msg: 'Article Not Found' });
+        } else
+            res.status(200).send(comments);
     }).catch(next);
 };
 
 exports.postComment = (req, res, next) => {
-
-
     const { article_id } = req.params;
-    //give req.body article id?
-
     postCommentModel(req.body, article_id)
         .then((comm) => {
-
-            return res.status(200).send({ comm });
+            if (!comm || comm === undefined) {
+                res.status(404).send({ msg: 'Article Not Found' });
+            } else
+                return res.status(201).send({comment: comm});
         }).catch(next);
 }
 

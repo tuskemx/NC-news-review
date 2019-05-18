@@ -164,25 +164,28 @@ describe('/api', () => {
                 })
         })
     });
-    describe('/articles/:article_id/comments', () => {
-        it('Patch accepts object with username and body property and res with posted comment', () => {
+    describe.only('/articles/:article_id/comments', () => {
+        it('POST accepts object with username and body property and res with posted comment', () => {
             return request(app)
-                .patch('/api/articles/2/comments')
+                .post('/api/articles/2/comments')
                 .send({
                     author: 'icellusedkars',
                     body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
                 })
-                .expect(200)
+                .expect(201)
                 .then((response) => {
-
-                    expect(response.body).to.have.keys('comm');
-                    expect(response.body.comm[0].article_id).to.eql(2);
-                    // no article id 
-
+                    console.log(response.body);
+                    expect(response.body.comment[0]).to.contain({
+                        article_id: 2,
+                        author: 'icellusedkars',
+                        body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
+                    });
                 });
         });
 
     })
+
+
     describe('/comments/:comment_id', () => {
         it('Patch increments vote based on objet key value', () => {
             return request(app)
