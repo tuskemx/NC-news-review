@@ -21,9 +21,9 @@ describe('/api', () => {
             return request(app)
                 .get('/api/topics')
                 .expect(200)
-                .then((res) => {
-                    expect(res.body.topics).to.be.an('array');
-                    expect(res.body.topics[0]).to.have.keys('description', 'slug');
+                .then((result) => {
+                    expect(result.body.topics).to.be.an('array');
+                    expect(result.body.topics[0]).to.have.keys('description', 'slug');
                 })
         })
     })
@@ -42,6 +42,7 @@ describe('/api', () => {
                         'topic',
                         'created_at',
                         'votes',
+                        'body',
                         'comment_count');
                 });
         });
@@ -63,7 +64,9 @@ describe('/api', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then((result) => {
-                    expect(dateRemoveLetters(result.body.articles[0].created_at)).to.greaterThan(dateRemoveLetters(result.body.articles[5].created_at));
+                    
+                    expect(dateRemoveLetters(result.body.articles[0].created_at)).to.greaterThan(dateRemoveLetters(result.body.articles[5].created_at))
+                    
                 });
         });
     });
@@ -83,8 +86,8 @@ describe('/api', () => {
             return request(app)
                 .get('/api/articles?topic=mitch')
                 .expect(200)
-                .then(({ body }) => {
-                    expect(body.articles[0].topic).to.eql(body.articles[1].topic);
+                .then((result) => {
+                    expect(result.body.articles[0].topic).to.eql(result.body.articles[1].topic);
                 });
         });
     });

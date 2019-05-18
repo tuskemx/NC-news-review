@@ -12,7 +12,7 @@ exports.fetchArticles = ({
     topic
 }) => {
     return connection
-        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
+        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes', 'articles.body')
         .from('articles')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
