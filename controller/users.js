@@ -7,7 +7,7 @@ exports.getUsers = (req, res, next) => {
       if (!users) return Promise.reject({ status: 404 });
       return res.send({ users })
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 

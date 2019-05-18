@@ -10,16 +10,22 @@ exports.getArticles = (req, res, next) => {
 };
 
 exports.getArticleByID = (req, res, next) => {
-    if (req.params.article_id === typeof 'string') {
-        res.status(400).send({ msg: 'Vote not Found' })
-    }
+
+    // console.log(typeof req.params.article_id)
+    // if (req.params.article_id !== typeof 'string') 
+    // Promise.reject(res.status(400).send({ msg: 'Vote not Found' }))
+    // .then()
+
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
+            let idtoNum = Number(req.params.article_id); // makes sure its string of number
+            if (req.params.article_id > 200 || req.params.article_id < 0 || typeof idtoNum !== 'number') {
+                return Promise.reject(res.status(404).send({ msg: 'article not found' }));
+            };
             if (!article || article === undefined) {
-                res.status(404).send({ msg: 'Article Not Found' });
+                return res.status(404).send({ msg: 'Article Not Found' });
             } else res.status(200).send({ article });
-        })
-        .catch(next);
+        }).catch(next);
 };
 
 // if (req.body.inc_votes === undefined) {
