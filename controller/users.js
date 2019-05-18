@@ -15,7 +15,8 @@ exports.getUsers = (req, res, next) => {
 exports.getUser = (req, res, next) => {
   fetchUsersModel(req.params.username)
     .then(([user]) => {
-      if (!user) return Promise.reject({ status: 404 });
+      console.log(user);
+      if (!user || user === undefined) return Promise.reject({ status: 404 });
       return res.send({ user });
     })
     .catch(next);
