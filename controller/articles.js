@@ -35,7 +35,7 @@ exports.updateArticleCont = (req, res, next) => {
     updateArticle(req.body.inc_votes, req.params.article_id)
         .then(([article]) => {
             if (!article || article === undefined) {
-                res.status(404).send({ msg: 'Article Not Found' });
+                res.status(400).send({ msg: 'Article Not Found' });
             } else
                 return res.status(200).send({ article });
         })
@@ -61,7 +61,7 @@ exports.postComment = (req, res, next) => {
     postCommentModel(req.body, article_id)
         .then((comm) => {
             if (!comm || comm === undefined) {
-                res.status(404).send({ msg: 'Article Not Found' });
+                res.status(400).send({ msg: 'Article Not Found' });
             } else
                 return res.status(201).send({ comment: comm });
         }).catch(next);
