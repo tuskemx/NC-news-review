@@ -58,6 +58,10 @@ exports.getcommentsByID = (req, res, next) => {
 
 exports.postComment = (req, res, next) => {
     const { article_id } = req.params;
+    // let idnum = Number(article_id);
+    // if (idnum !== typeof 'number') {
+    //     return res.status(400).send({ msg: 'invalid article id' })
+    // } errr
     postCommentModel(req.body, article_id)
         .then((comm) => {
             if (!comm || comm === undefined) {

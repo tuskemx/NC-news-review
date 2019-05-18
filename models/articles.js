@@ -64,6 +64,7 @@ exports.fetchcommentsByID = (
 };
 
 exports.postCommentModel = (req, article_id) => {
+  
 
     const newReq = { author: req.author, body: req.body, article_id: article_id }
     
