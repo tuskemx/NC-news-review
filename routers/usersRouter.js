@@ -5,11 +5,12 @@ const {
 const { handle405 } = require('../errors');
 
 usersRouter.route('/')
-.get(getUsers);
+.get(getUsers)
+.all(handle405);
 
 usersRouter.route('/:username')
 .get(getUser)
-// .all(handle405);
+.all(handle405);
 
 
 

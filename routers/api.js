@@ -13,8 +13,8 @@ apiRouter.use('/articles', articleRouter);
 apiRouter.use('/comments', commentRouter);
 apiRouter.use('/users', usersRouter);
 
-// apiRouter.route('/')
-//     .all(handle405);
+apiRouter.route('/')
+    .all(handle405);
 
 
 

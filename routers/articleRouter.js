@@ -7,17 +7,17 @@ const { handle405 } = require('../errors/index');
 
 articleRouter.route('/')
     .get(getArticles)
-    // .all(handle405);
+    .all(handle405);
 
 articleRouter.route('/:article_id')
     .get(getArticleByID)
     .patch(updateArticleCont)
-    // .all(handle405);
+    .all(handle405);
 
 articleRouter.route('/:article_id/comments')
     .get(getcommentsByID)
     .post(postComment)
-    // .all(handle405);
+    .all(handle405);
 
 
 
