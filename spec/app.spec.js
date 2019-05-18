@@ -155,16 +155,14 @@ describe('/api', () => {
                 .get('/api/articles/1/comments?sort_by=votes&order=asc')
                 .expect(200)
                 .then((response) => {
-                    expect(response.body.length).to.equal(13);
-                    const len = response.body.length;
-                    expect(response.body[0].votes).to.be.lessThan(response.body[len - 1].votes)
-                    expect(response.body[1].votes).to.be.lessThan(response.body[len - 1].votes)
-                    expect(response.body[5].votes).to.be.lessThan(response.body[len - 1].votes)
-                    expect(response.body[6].votes).to.be.lessThan(response.body[len - 3].votes)
+                    expect(response.body).to.be.ascendingBy('votes')
+                    expect(response.body).to.not.be.descendingBy('votes');
+
+
                 })
         })
     });
-    describe.only('/articles/:article_id/comments', () => {
+    describe('/articles/:article_id/comments', () => {
         it('POST accepts object with username and body property and res with posted comment', () => {
             return request(app)
                 .post('/api/articles/2/comments')
