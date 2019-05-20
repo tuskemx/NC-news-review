@@ -21,7 +21,7 @@ exports.fetchArticles = ({
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
             if (topic) query.where('articles.topic', topic);
-            
+
         });
     //regex it to a number
 
@@ -38,11 +38,11 @@ exports.fetchArticleByID = (id) => {
 };
 
 exports.updateArticle = (inc_votes, article_id) => {
-  console.log(typeof inc_votes);
+    console.log(typeof inc_votes);
     if (!inc_votes) {
-        inc_votes = 0; 
+        inc_votes = 0;
     };
-        return connection('articles')
+    return connection('articles')
         .where({ article_id })
         .increment('votes', inc_votes)
         .returning('*');
@@ -51,7 +51,7 @@ exports.updateArticle = (inc_votes, article_id) => {
 
 
 exports.fetchcommentsByID = (
-    id, /*remember to call in contr with vars*/
+    id, /*remember to call in controller with variables*/
     sort_by = 'created_at',
     order = 'desc') => {
     return connection
@@ -59,17 +59,13 @@ exports.fetchcommentsByID = (
         .from('comments')
         .where('comments.article_id', id.article_id)
         .modify((query) => {
-            query.orderBy('comments.' + `${sort_by}`, order || 'asc')
+            query.orderBy('comments.' + `${sort_by}`, order || 'asc') 
         });
 };
 
 exports.postCommentModel = (req, article_id) => {
-  
-
     const newReq = { author: req.author, body: req.body, article_id: article_id }
-    
     return connection('comments')
-    
         .insert(newReq)
         .returning('*');
 };
