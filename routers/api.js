@@ -3,7 +3,7 @@ const topicsRouter = require('../routers/topicsRouter');
 const articleRouter = require('../routers/articleRouter')
 const commentRouter = require('../routers/commentRouter');
 const usersRouter = require('../routers/usersRouter')
-const { handle405 } = require('../errors/index')
+const { handle400s } = require('../errors/index')
 
 
 
@@ -14,7 +14,7 @@ apiRouter.use('/comments', commentRouter);
 apiRouter.use('/users', usersRouter);
 
 apiRouter.route('/')
-    .all(handle405);
+    .all(handle400s);
 
 
 

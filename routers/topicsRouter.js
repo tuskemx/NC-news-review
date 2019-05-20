@@ -1,6 +1,6 @@
 const topicsRouter = require('express').Router();
 const { getTopics, continsertTopic } = require('../controller/topics');
-const { handle405 } = require('../errors/index');
+const { handle400s } = require('../errors/index');
 
 
 
@@ -8,7 +8,7 @@ const { handle405 } = require('../errors/index');
 topicsRouter.route('/')
     .get(getTopics)
     .post(continsertTopic)
-    .all(handle405);
+    .all(handle400s);
     
 
 module.exports = topicsRouter;

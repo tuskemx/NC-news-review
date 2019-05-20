@@ -16,7 +16,7 @@ exports.getUser = (req, res, next) => {
   fetchUsersModel(req.params.username)
     .then(([user]) => {
       console.log(user);
-      if (!user || user === undefined) return Promise.reject({ status: 404 });
+      if (!user || user === undefined) return res.status(404).send({ msg: 'User ID not found' });
       return res.send({ user });
     })
     .catch(next);

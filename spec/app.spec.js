@@ -82,6 +82,15 @@ describe('/api', () => {
         });
     });
     describe('/articles', () => {
+        it('GET: invalid input for sort_by throws correct error', () => {
+            return request(app)
+                .get('/api/articles?sort_by=not-a-column')
+                .expect(404)
+            // and error message find out how to specificy response on tests
+
+        });
+    });
+    describe('/articles', () => {
         it('GET: author query sorts by user value topic', () => {
             return request(app)
                 .get('/api/articles?topic=mitch')
@@ -121,6 +130,13 @@ describe('/api', () => {
 
                     expect(response.body.article.article_id).to.equal(2);
                 })
+        })
+    })
+    describe('/api/:articles_id', () => {
+        it("responds to GET requests with a single article and comment count", () => {
+            return request(app)
+                .get('/api/articles/1000')
+                .expect(400)
         })
     })
     describe('/:article_id', () => {
@@ -182,23 +198,68 @@ describe('/api', () => {
         });
 
     })
+    describe('/articles/:article_id/comments', () => {
+        it('POST status code 400 bad request when not valid article_id', () => {
+            return request(app)
+                .post('/api/articles/not-a-valid-id/comments')
+                .send({
+                    author: 'icellusedkars',
+                    body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
+                })
+                .expect(400)
+        });
+    });
+    describe('/articles/:article_id/comments', () => {
+        it('POST expect unprocessable entity 422 error for large article ID', () => {
+            return request(app)
+                .post('/api/articles/2000/comments')
+                .send({
+                    author: 'icellusedkars',
+                    body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
+                })
+                .expect(422)
+        });
+    });
 
+
+
+describe('/comments/:comment_id', () => {
+    it('Patch increments vote based on object key value', () => {
+        return request(app)
+            .patch('/api/comments/3')
+            .send({
+                inc_votes: 500
+            })
+            .expect(200)
+            .then((response) => {
+
+                console.log(response.body.comment.votes);
+                expect(response.body.comment.votes).to.eql(600);
+                // no article id 
+
+            });
+    });
+    describe('/comments/:comment_id', () => {
+        it('Patch throws correct 404 error when invalid value', () => {
+            return request(app)
+                .patch('/api/comments/1')
+                .send({
+                    inc_votes: 'test'
+                })
+                .expect(404)
+        });
+    });
 
     describe('/comments/:comment_id', () => {
-        it('Patch increments vote based on objet key value', () => {
+        it('Patch throws correct 404 error when invalid value', () => {
             return request(app)
-                .patch('/api/comments/3')
+                .patch('/api/comments/not-a-valid-id')
                 .send({
-                    inc_votes: 500
+                    inc_votes: 4
                 })
-                .expect(200)
-                .then((response) => {
+                .expect(400)
 
-                    console.log(response.body.comment.votes);
-                    expect(response.body.comment.votes).to.eql(600);
-                    // no article id 
 
-                });
         });
     });// accepts queries
     describe('/comments/:comment_id', () => {
@@ -213,6 +274,20 @@ describe('/api', () => {
                     // no article id 
 
                 });
+        });
+    });
+    describe('/comments/:comment_id', () => {
+        it('DELETE comment returns correct error when invalid comment_id', () => {
+            return request(app)
+                .delete('/api/comments/not-a-number')
+                .expect(400)
+        });
+    });
+    describe('/comments/:comment_id', () => {
+        it('DELETE comment returns correct error when comment_id is valid but doesnt exist)', () => {
+            return request(app)
+                .delete('/api/comments/1000')
+                .expect(404)
         });
     });
     describe('/users', () => {
@@ -241,7 +316,15 @@ describe('/api', () => {
                 });
         });
     });
+    describe('/users/:username', () => {
+        it('GET invalid `user_id`, should throw a 404: Not Found status code', () => {
+            return request(app)
+                .get('/api/users/not-a-username')
+                .expect(404)
+        });
+    });
 
 });
 
 
+});

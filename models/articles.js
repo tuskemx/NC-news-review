@@ -1,10 +1,6 @@
 const connection = require('../db/connection');
 
 
-// const getArticlesModel = () => {
-// console.log('change');
-// };
-
 exports.fetchArticles = ({
     sort_by = 'articles.created_at',
     order = 'desc',
@@ -21,7 +17,7 @@ exports.fetchArticles = ({
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
             if (topic) query.where('articles.topic', topic);
-
+            
         });
     //regex it to a number
 
@@ -38,10 +34,6 @@ exports.fetchArticleByID = (id) => {
 };
 
 exports.updateArticle = (inc_votes, article_id) => {
-    console.log(typeof inc_votes);
-    if (!inc_votes) {
-        inc_votes = 0;
-    };
     return connection('articles')
         .where({ article_id })
         .increment('votes', inc_votes)

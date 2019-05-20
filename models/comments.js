@@ -1,12 +1,8 @@
 const connection = require('../db/connection');
 
 exports.updateComment = (inc_votes, comment_id) => {
-  console.log(typeof inc_votes);
-  if (!inc_votes) {
-      inc_votes = 0; 
-  };
-  console.log(inc_votes);
-  console.log(comment_id);
+  
+  // if (inc_votes !== typeof 'number') inc_votes = 0; 
   return connection('comments')
     .where('comments.comment_id', comment_id)
     .increment('votes', inc_votes)
