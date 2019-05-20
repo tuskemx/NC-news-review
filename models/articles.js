@@ -28,7 +28,7 @@ exports.fetchArticleByID = (id) => {
         .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
         .from('articles')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
-        .groupBy('articles.article_id', 'comments.comment_id')
+        .groupBy('articles.article_id')
         .where('articles.article_id', id)
         .count({ comment_count: 'comments.comment_id' });
 };

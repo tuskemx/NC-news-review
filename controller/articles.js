@@ -3,6 +3,7 @@ const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postC
 exports.getArticles = (req, res, next) => {
     fetchArticles(req.query)
         .then((articles) => {
+            console.log(articles);
             if (articles.length > 0) return res.status(200).send({ articles })
             else return res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
         }).catch(next);
@@ -12,10 +13,6 @@ exports.getArticleByID = (req, res, next) => {
 
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
-            console.log(article);
-            console.log(article);
-            console.log(article);
-            console.log(article);
             let idtoNum = Number(req.params.article_id); // makes sure its string of number
             if (req.params.article_id < 0 || typeof idtoNum !== 'number' || article === undefined || !article) {
                 return res.status(400).send({ msg: 'Article not found check your input' });

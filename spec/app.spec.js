@@ -118,6 +118,7 @@ describe('/api', () => {
                 .get('/api/articles/2')
                 .expect(200)
                 .then((response) => {
+                    console.log(response.body);
                     expect(response.body.article).to.have.keys(
                         'author',
                         'title',
@@ -129,6 +130,27 @@ describe('/api', () => {
                     );
 
                     expect(response.body.article.article_id).to.equal(2);
+                })
+        })
+    })
+    describe('/api/:articles_id', () => {
+        it("responds to GET requests with a single article and comment count", () => {
+            return request(app)
+                .get('/api/articles/1')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.article).to.have.keys(
+                        'author',
+                        'title',
+                        'article_id',
+                        'topic',
+                        'created_at',
+                        'votes',
+                        'comment_count',
+                    );
+
+                    expect(response.body.article.article_id).to.equal(1);
+                    expect(response.body.article.comment_count).to.equal('13');
                 })
         })
     })
@@ -223,108 +245,108 @@ describe('/api', () => {
 
 
 
-describe('/comments/:comment_id', () => {
-    it('Patch increments vote based on object key value', () => {
-        return request(app)
-            .patch('/api/comments/3')
-            .send({
-                inc_votes: 500
-            })
-            .expect(200)
-            .then((response) => {
-
-                console.log(response.body.comment.votes);
-                expect(response.body.comment.votes).to.eql(600);
-                // no article id 
-
-            });
-    });
     describe('/comments/:comment_id', () => {
-        it('Patch throws correct 404 error when invalid value', () => {
+        it('Patch increments vote based on object key value', () => {
             return request(app)
-                .patch('/api/comments/1')
+                .patch('/api/comments/3')
                 .send({
-                    inc_votes: 'test'
+                    inc_votes: 500
                 })
-                .expect(404)
-        });
-    });
-
-    describe('/comments/:comment_id', () => {
-        it('Patch throws correct 404 error when invalid value', () => {
-            return request(app)
-                .patch('/api/comments/not-a-valid-id')
-                .send({
-                    inc_votes: 4
-                })
-                .expect(400)
-
-
-        });
-    });// accepts queries
-    describe('/comments/:comment_id', () => {
-        it('DELETE comment based on id given', () => {
-            return request(app)
-                .delete('/api/comments/3')
-                .expect(204)
+                .expect(200)
                 .then((response) => {
 
-                    console.log(response.body);
-                    expect(response.body).to.eql({});
+                    console.log(response.body.comment.votes);
+                    expect(response.body.comment.votes).to.eql(600);
                     // no article id 
 
                 });
         });
-    });
-    describe('/comments/:comment_id', () => {
-        it('DELETE comment returns correct error when invalid comment_id', () => {
-            return request(app)
-                .delete('/api/comments/not-a-number')
-                .expect(400)
+        describe('/comments/:comment_id', () => {
+            it('Patch throws correct 404 error when invalid value', () => {
+                return request(app)
+                    .patch('/api/comments/1')
+                    .send({
+                        inc_votes: 'test'
+                    })
+                    .expect(404)
+            });
         });
-    });
-    describe('/comments/:comment_id', () => {
-        it('DELETE comment returns correct error when comment_id is valid but doesnt exist)', () => {
-            return request(app)
-                .delete('/api/comments/1000')
-                .expect(404)
-        });
-    });
-    describe('/users', () => {
-        it('GET: should respond with all user records, as array of objects', () => {
-            return request(app)
-                .get('/api/users')
-                .expect(200)
-                .then((response) => {
-                    expect(response.body.users).to.be.an('array');
-                    expect(response.body.users[0].username).to.eql('butter_bridge');
-                    expect(response.body.users).to.have.length(4);
-                });
-        });
-    });
 
-    describe('/users/:username', () => {
-        it('GET should respond with relevant user object, based on request username', () => {
-            return request(app)
-                .get('/api/users/butter_bridge')
-                .expect(200)
-                .then((response) => {
-                    expect(response.body.user).to.be.an('object');
-                    expect(response.body.user.username).to.eql('butter_bridge');
-                    expect(response.body.user.name).to.eql('jonny');
+        describe('/comments/:comment_id', () => {
+            it('Patch throws correct 404 error when invalid value', () => {
+                return request(app)
+                    .patch('/api/comments/not-a-valid-id')
+                    .send({
+                        inc_votes: 4
+                    })
+                    .expect(400)
 
-                });
-        });
-    });
-    describe('/users/:username', () => {
-        it('GET invalid `user_id`, should throw a 404: Not Found status code', () => {
-            return request(app)
-                .get('/api/users/not-a-username')
-                .expect(404)
-        });
-    });
 
-});
+            });
+        });// accepts queries
+        describe('/comments/:comment_id', () => {
+            it('DELETE comment based on id given', () => {
+                return request(app)
+                    .delete('/api/comments/3')
+                    .expect(204)
+                    .then((response) => {
+
+                        console.log(response.body);
+                        expect(response.body).to.eql({});
+                        // no article id 
+
+                    });
+            });
+        });
+        describe('/comments/:comment_id', () => {
+            it('DELETE comment returns correct error when invalid comment_id', () => {
+                return request(app)
+                    .delete('/api/comments/not-a-number')
+                    .expect(400)
+            });
+        });
+        describe('/comments/:comment_id', () => {
+            it('DELETE comment returns correct error when comment_id is valid but doesnt exist)', () => {
+                return request(app)
+                    .delete('/api/comments/1000')
+                    .expect(404)
+            });
+        });
+        describe('/users', () => {
+            it('GET: should respond with all user records, as array of objects', () => {
+                return request(app)
+                    .get('/api/users')
+                    .expect(200)
+                    .then((response) => {
+                        expect(response.body.users).to.be.an('array');
+                        expect(response.body.users[0].username).to.eql('butter_bridge');
+                        expect(response.body.users).to.have.length(4);
+                    });
+            });
+        });
+
+        describe('/users/:username', () => {
+            it('GET should respond with relevant user object, based on request username', () => {
+                return request(app)
+                    .get('/api/users/butter_bridge')
+                    .expect(200)
+                    .then((response) => {
+                        expect(response.body.user).to.be.an('object');
+                        expect(response.body.user.username).to.eql('butter_bridge');
+                        expect(response.body.user.name).to.eql('jonny');
+
+                    });
+            });
+        });
+        describe('/users/:username', () => {
+            it('GET invalid `user_id`, should throw a 404: Not Found status code', () => {
+                return request(app)
+                    .get('/api/users/not-a-username')
+                    .expect(404)
+            });
+        });
+
+    });
 
 
 });
