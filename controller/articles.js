@@ -46,11 +46,11 @@ exports.getcommentsByID = (req, res, next) => {
     const id = req.params; //destructure id?
     const sortBy = req.query.sort_by;
     const order = req.query.order;
-    console.log(id);
     fetchcommentsByID(id, sortBy, order).then((comments) => {
+        
         if (!comments || comments === undefined || typeof comments === 'number') {
             return res.status(404).send({ msg: 'Article Not Found' });
-        } else res.status(200).send(comments);
+        } else res.status(200).send({ comments: comments});
         // if comments.body.length < 1 res status 200 return empty array?
     }).catch(next);
 };
