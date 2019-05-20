@@ -208,7 +208,7 @@ describe('/api', () => {
                 })
         })
     });
-    describe.only('/articles/:article_id/comments', () => {
+    describe('/articles/:article_id/comments', () => {
         it('GET: articles comments query sorts by given query', () => {
             return request(app)
                 .get('/api/articles/1/comments?sort_by=votes&order=asc')
