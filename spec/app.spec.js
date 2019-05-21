@@ -187,7 +187,6 @@ describe('/api', () => {
                 .get('/api/articles/5/comments')
                 .expect(200)
                 .then((response) => {
-                   console.log(response.body.comments[0])
                     expect(response.body.comments.length).to.equal(2);
                     expect(response.body.comments[0]).to.contain.keys('comment_id', 'author', 'votes', 'created_at', 'body', 'article_id');
                     expect(response.body.comments[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
@@ -197,11 +196,32 @@ describe('/api', () => {
     describe('/articles/:article_id/comments', () => {
         it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
             return request(app)
+                .get('/api/articles/2/comments')
+                .expect(200)
+                .then((response) => {
+                    console.log(response.body);
+                    expect(response.body.comments).to.equal(response.body.comments);
+                    expect(response.body.comments).to.eql([])
+                })
+        })
+    });
+    describe('/articles/:article_id/comments', () => {
+        it('POST expect unprocessable entity 422 error for large article ID', () => {
+            return request(app)
+                .post('/api/articles/2000/comments')
+                .send({
+                    author: 'icellusedkars',
+                    body: 'TESSSSSSSSSSSSSSTTTTTTTTT'
+                })
+                .expect(422)
+        });
+    });
+    describe('/articles/:article_id/comments', () => {
+        it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
+            return request(app)
                 .get('/api/articles/1/comments')
                 .expect(200)
                 .then((response) => {
-                     console.log(response.body.comments.length);
-                     
                     expect(response.body.comments.length).to.equal(13);
                     // expect(response.body.comments).to.contain.keys('comment_id', 'author', 'votes', 'created_at', 'body', 'article_id');
                     // expect(response.body[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
@@ -214,12 +234,11 @@ describe('/api', () => {
                 .get('/api/articles/1/comments?sort_by=votes&order=asc')
                 .expect(200)
                 .then((response) => {
-                    console.log(response.body);
                     let len = response.body.comments.length - 1
                     expect(response.body.comments[0].votes).to.be.lessThan(response.body.comments[len].votes)
                     expect(response.body.comments[0].votes).to.be.lessThan(response.body.comments[len - 1].votes)
                     expect(response.body.comments[0].votes).to.be.lessThan(response.body.comments[len - 2].votes)
-     
+
                     // expect(response.body.comments.votes).to.be.ascendingBy('votes')
                     // expect(response.body.comments.votes).to.not.be.descendingBy('votes');
                 })
@@ -235,7 +254,6 @@ describe('/api', () => {
                 })
                 .expect(201)
                 .then((response) => {
-                    console.log(response.body);
                     expect(response.body.comment[0]).to.contain({
                         article_id: 2,
                         author: 'icellusedkars',
@@ -267,6 +285,8 @@ describe('/api', () => {
                 .expect(422)
         });
     });
+
+
 
 
 
