@@ -193,15 +193,16 @@ describe('/api', () => {
                 })
         })
     });
+
     describe('/articles/:article_id/comments', () => {
-        it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
+        it('GET status: 404 as article has no comments', () => {
             return request(app)
                 .get('/api/articles/2/comments')
-                .expect(200)
+                .expect(404)
                 .then((response) => {
                     console.log(response.body);
-                    expect(response.body.comments).to.equal(response.body.comments);
-                    expect(response.body.comments).to.eql([])
+                    // expect(response.body.comments).to.equal(response.body.comments);
+                    // expect(response.body.comments).to.eql([])
                 })
         })
     });
@@ -222,6 +223,7 @@ describe('/api', () => {
                 .get('/api/articles/1/comments')
                 .expect(200)
                 .then((response) => {
+
                     expect(response.body.comments.length).to.equal(13);
                     // expect(response.body.comments).to.contain.keys('comment_id', 'author', 'votes', 'created_at', 'body', 'article_id');
                     // expect(response.body[0].body).to.eql('What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.')
@@ -244,6 +246,31 @@ describe('/api', () => {
                 })
         })
     });
+    // describe('/articles/:article_id/comments', () => {
+    //     it('GET: defaults to created desc', () => {
+    //         return request(app)
+    //             .get('/api/articles/1/comments?order=asc')
+    //             .expect(200)
+    //             .then(([response]) => {
+    //                 //works but test is wrong
+
+    //                 // expect(response.body[0].created_at).to.be.sorted({ascending: true})
+    //                 expect(response.body[0].created_at).to.be.lessThan(response.body[1].created_at);
+
+
+    //                 // expect(response.body.comments.votes).to.be.ascendingBy('votes')
+    //                 // expect(response.body.comments.votes).to.not.be.descendingBy('votes');
+    //             })
+    //     })
+    // });
+    describe('/articles/:article_id/comments', () => {
+        it('GET: 404 when not a valid article_id', () => {
+            return request(app)
+                .get('/api/articles/1000/comments')
+                .expect(404)
+        })
+    })
+
     describe('/articles/:article_id/comments', () => {
         it('POST accepts object with username and body property and res with posted comment', () => {
             return request(app)
@@ -392,6 +419,25 @@ describe('/api', () => {
         });
 
     });
+    describe('POST', () => {
+        it('responds with the posted user, containing their username, avatar_url & name', () => {
+            const test = {
+                username: 'test',
+                avatar_url: 'www.google.com',
+                name: 'testName',
+            };
+            return request(app)
+                .post('/api/users')
+                .send(test)
+                .expect(201)
+                .then((response) => {
+                    expect(response.body.postedUser).to.include({
+                        username: 'test',
+                        avatar_url: 'www.google.com',
+                        name: 'testName',
+                    });
+                });
 
-
+        });
+    });
 });

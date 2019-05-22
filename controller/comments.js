@@ -11,9 +11,6 @@ exports.patchComment = (req, res, next) => {
     console.log(inc_votes);
     updateComment(inc_votes, req.params.comment_id)
         .then(([comment]) => {
-            console.log(comment);
-            console.log(comment);
-            console.log(comment);
             if (!comment) return res.status(404).send({ msg: 'comment not found' });
             return res.status(200).send({ comment: comment });
         })

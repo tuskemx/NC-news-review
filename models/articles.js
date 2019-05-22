@@ -2,7 +2,7 @@ const connection = require('../db/connection');
 
 
 exports.fetchArticles = ({
-    limit = 10,
+    limit = 12,
     p = 1,
     sort_by = 'articles.created_at',
     order = 'desc',
@@ -15,12 +15,15 @@ exports.fetchArticles = ({
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
         .groupBy('articles.article_id')
+        .limit(limit)
         // .offset((p - 1 * limit)
         // .limit(limit)
         .modify((query) => {
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
             if (topic) query.where('articles.topic', topic);
+            if (limit) query.limit(limit);
+            if (p) query.offset((p - 1) * limit)
 
         });
     //regex it to a number
