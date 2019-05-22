@@ -2,6 +2,8 @@ const connection = require('../db/connection');
 
 
 exports.fetchArticles = ({
+    limit = 10,
+    p = 1,
     sort_by = 'articles.created_at',
     order = 'desc',
     author,
@@ -13,11 +15,13 @@ exports.fetchArticles = ({
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
         .groupBy('articles.article_id')
+        // .offset((p - 1 * limit)
+        // .limit(limit)
         .modify((query) => {
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
             if (topic) query.where('articles.topic', topic);
-            
+
         });
     //regex it to a number
 
@@ -51,7 +55,7 @@ exports.fetchcommentsByID = (
         .from('comments')
         .where('comments.article_id', id.article_id)
         .modify((query) => {
-            query.orderBy('comments.' + `${sort_by}`, order || 'asc') 
+            query.orderBy('comments.' + `${sort_by}`, order || 'asc')
         });
 };
 

@@ -4,7 +4,7 @@ exports.getArticles = (req, res, next) => {
     fetchArticles(req.query)
         .then((articles) => {
             console.log(articles);
-            if (articles.length > 0) return res.status(200).send({ articles })
+            if (articles.length > 0) return res.status(200).send({ articles: articles })
             else return res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
         }).catch(next);
 };
@@ -47,10 +47,10 @@ exports.getcommentsByID = (req, res, next) => {
     const sortBy = req.query.sort_by;
     const order = req.query.order;
     fetchcommentsByID(id, sortBy, order).then((comments) => {
-        
+
         if (!comments || comments === undefined || typeof comments === 'number') {
             return res.status(404).send({ msg: 'Article Not Found' });
-        } else res.status(200).send({ comments: comments});
+        } else res.status(200).send({ comments: comments });
         // if comments.body.length < 1 res status 200 return empty array?
     }).catch(next);
 };
