@@ -57,7 +57,7 @@ exports.getcommentsByID = (req, res, next) => {
     const sortBy = req.query.sort_by;
     const order = req.query.order;
     fetchcommentsByID(id, sortBy, order).then((comments) => {
-        console.log(comments);
+      
         if (comments.length <= 0) return res.status(404).send({ msg: 'No comments found for that article' })
         if (!comments || comments === undefined || typeof comments === 'number') {
             return res.status(404).send({ msg: 'Article Not Found' });

@@ -200,7 +200,7 @@ describe('/api', () => {
                 .get('/api/articles/2/comments')
                 .expect(404)
                 .then((response) => {
-                    console.log(response.body);
+               
                     // expect(response.body.comments).to.equal(response.body.comments);
                     // expect(response.body.comments).to.eql([])
                 })
