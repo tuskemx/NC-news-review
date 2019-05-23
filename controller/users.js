@@ -30,7 +30,6 @@ exports.postUser = (req, res, next) => { //added recently extra
   } else {
     return postUser(username, avatar_url, name)
       .then(([postedUser]) => {
-        console.log(postedUser);
         res.status(201).send({ postedUser });
       })
       .catch(next);

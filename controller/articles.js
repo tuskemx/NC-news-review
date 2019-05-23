@@ -1,19 +1,16 @@
 const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel } = require('../models/articles');
 
-const articleLength = 0;
-
 exports.getArticles = (req, res, next) => {
     // const author = req.query.author;
     // const sort_by = req.query.sort_by;
     // const order = req.query.order;
     // const { limit, sort_by, p, order, author, topic } = req.query;
     //dont have to pass sep values because of query in model?
-    console.log(req.query);
-    console.log(req.query);
+
     // const topic = req.query.topic;
     fetchArticles(req.query)
         .then((articles) => {
-            console.log(articles);
+
             if (articles.length > 0) return res.status(200).send({ articles: articles })
             else return res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
         }).catch(next);
@@ -57,7 +54,7 @@ exports.getcommentsByID = (req, res, next) => {
     const sortBy = req.query.sort_by;
     const order = req.query.order;
     fetchcommentsByID(id, sortBy, order).then((comments) => {
-      
+
         if (comments.length <= 0) return res.status(404).send({ msg: 'No comments found for that article' })
         if (!comments || comments === undefined || typeof comments === 'number') {
             return res.status(404).send({ msg: 'Article Not Found' });
@@ -69,7 +66,7 @@ exports.getcommentsByID = (req, res, next) => {
 exports.postComment = (req, res, next) => {
     const { article_id } = req.params;
     let idnum = Number(article_id)
-    if (idnum > 1000 || typeof idnum !== 'number') return res.status(422).send({ msg: 'unprocessable entity 422' });
+    if (idnum > 30 || typeof idnum !== 'number') return res.status(422).send({ msg: 'unprocessable entity 422' });
     postCommentModel(req.body, article_id)
         .then((comm) => {
             if (!comm || comm === undefined) {
