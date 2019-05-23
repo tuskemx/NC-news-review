@@ -118,7 +118,7 @@ describe('/api', () => {
                 .get('/api/articles/2')
                 .expect(200)
                 .then((response) => {
-                    console.log(response.body);
+                    
                     expect(response.body.article).to.have.keys(
                         'author',
                         'title',
@@ -327,7 +327,7 @@ describe('/api', () => {
                 .expect(200)
                 .then((response) => {
 
-                    console.log(response.body.comment.votes);
+                    
                     expect(response.body.comment.votes).to.eql(600);
                     // no article id 
 
@@ -363,7 +363,7 @@ describe('/api', () => {
                     .expect(204)
                     .then((response) => {
 
-                        console.log(response.body);
+                        
                         expect(response.body).to.eql({});
                         // no article id 
 
