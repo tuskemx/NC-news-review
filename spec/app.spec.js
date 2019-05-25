@@ -42,7 +42,6 @@ describe('/api', () => {
                         'topic',
                         'created_at',
                         'votes',
-                        'body',
                         'comment_count');
                 });
         });
@@ -281,7 +280,7 @@ describe('/api', () => {
                 })
                 .expect(201)
                 .then((response) => {
-                    expect(response.body.comment[0]).to.contain({
+                    expect(response.body.comment).to.contain({
                         article_id: 2,
                         author: 'icellusedkars',
                         body: 'TESSSSSSSSSSSSSSTTTTTTTTT'

@@ -23,7 +23,7 @@ exports.getArticleByID = (req, res, next) => {
             let idtoNum = Number(req.params.article_id); // makes sure its string of number
             if (req.params.article_id < 0 || typeof idtoNum !== 'number' || article === undefined || !article) {
                 return res.status(400).send({ msg: 'Article not found check your input' });
-
+                //add 404 
             } else res.status(200).send({ article: article });
         }).catch(next);
 };
@@ -56,7 +56,7 @@ exports.getcommentsByID = (req, res, next) => {
     fetchcommentsByID(id, sortBy, order).then((comments) => {
 
         if (comments.length <= 0) return res.status(404).send({ msg: 'No comments found for that article' })
-        if (!comments || comments === undefined || typeof comments === 'number') {
+        if (comments === undefined || typeof comments === 'number') {
             return res.status(404).send({ msg: 'Article Not Found' });
         } else res.status(200).send({ comments: comments }); // change comments to array?
         // if comments.body.length < 1 res status 200 return empty array?
@@ -68,7 +68,7 @@ exports.postComment = (req, res, next) => {
     let idnum = Number(article_id)
     if (idnum > 30 || typeof idnum !== 'number') return res.status(422).send({ msg: 'unprocessable entity 422' });
     postCommentModel(req.body, article_id)
-        .then((comm) => {
+        .then(([comm]) => {
             if (!comm || comm === undefined) {
                 return res.status(400).send({ msg: 'Article Not Found' });
             } else

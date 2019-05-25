@@ -10,7 +10,7 @@ exports.fetchArticles = ({
     topic
 }) => {
     return connection
-        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes', 'articles.body')
+        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
         .from('articles')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
@@ -59,6 +59,7 @@ exports.fetchcommentsByID = (
         .where('comments.article_id', id.article_id)
         .modify((query) => {
             query.orderBy('comments.' + `${sort_by}`, order || 'asc')
+            //returning all but article id?
         });
 };
 

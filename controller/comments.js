@@ -7,7 +7,7 @@ exports.patchComment = (req, res, next) => {
     } else {
         inc_votes = req.body.inc_votes
     }
-    if (inc_votes === 0) return res.status(404).send({ msg: 'Cannot increment by that value, check your input' });
+    if (inc_votes === 0) return /*next(err) here so handler returns 400*/ res.status(404).send({ msg: 'Cannot increment by that value, check your input' });
     console.log(inc_votes);
     updateComment(inc_votes, req.params.comment_id)
         .then(([comment]) => {
