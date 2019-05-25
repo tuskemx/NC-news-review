@@ -337,13 +337,13 @@ describe('/api', () => {
                 });
         });
         describe('/comments/:comment_id', () => {
-            it('Patch throws correct 404 error when invalid value', () => {
+            it('Patch throws correct 400 error when invalid value', () => {
                 return request(app)
                     .patch('/api/comments/1')
                     .send({
                         inc_votes: 'test'
                     })
-                    .expect(404)
+                    .expect(400)
             });
         });
 

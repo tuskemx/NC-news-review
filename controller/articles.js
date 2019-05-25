@@ -16,12 +16,23 @@ exports.getArticles = (req, res, next) => {
         }).catch(next);
 };
 
+// .catch(err => {
+//     if (err.code === '22P02') {
+//         err = { code: 400, message: 'Article id invalid!'}
+//     } else if (err.code !== 404) {
+//         err = {code: 500, message: `Unhandled error at getCommentsByArticle: ${err.code} ${err.message}`}
+//     };
+//     next(err);
+// })
+// };
+
 exports.getArticleByID = (req, res, next) => {
 
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
+            if (article === undefined) res.status(404).send({ msg: 'article not found '})
             let idtoNum = Number(req.params.article_id); // makes sure its string of number
-            if (req.params.article_id < 0 || typeof idtoNum !== 'number' || article === undefined || !article) {
+            if (req.params.article_id < 0 || typeof idtoNum !== 'number') {
                 res.status(400).send({ msg: 'Article not found check your input' });
                 //add 404 
             } else res.status(200).send({ article: article });
