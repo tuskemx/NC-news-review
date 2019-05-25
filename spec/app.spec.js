@@ -381,7 +381,7 @@ describe('/api', () => {
             });
         });
         describe('/comments/:comment_id', () => {
-            it('DELETE comment returns correct error when comment_id is valid but doesnt exist)', () => {
+            it('DELETE comment returns correct error when comment_id format is valid but doesnt exist)', () => {
                 return request(app)
                     .delete('/api/comments/1000')
                     .expect(404)
