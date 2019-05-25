@@ -7,20 +7,30 @@ exports.handle400s = (err, req, res, next) => {
 };
 
 exports.routeNotFound = (req, res) => {
-  res.status(404).send({ msg: 'Route Not Found' });
-  next(err);
+  if (err.code === 404) {
+    res.status(404).send({ msg: 'Route Not Found' });
+  } else {
+    next(err);
+  };
+}
+
+exports.handle405 = (err, req, res, next) => {
+  if (err.code === 405) {
+    res.status(405).send({ message: err.message });
+  } else {
+    next(err);
+  };
 };
 
-
-
-exports.handle405 = (req, res) => {
-
-  res.status(405).send({ msg: 'METHOD not allowed' });
-  next(err);
+exports.handle422 = (err, req, res, next) => {
+  if (err.code === 422) {
+    res.status(422).send({ message: err.message });
+  } else {
+    next(err);
+  };
 };
 
 exports.handle500 = (err, req, res, next) => {
-
-  res.status(500).send({ msg: 'Internal Server Error' });
-  next(err);
+  console.log(err.message);
+  res.status(500).send({ message: err.message });
 };
