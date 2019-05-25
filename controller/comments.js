@@ -2,16 +2,17 @@ const { updateComment, deleteCommentModel } = require('../models/comments');
 
 
 exports.patchComment = (req, res, next) => {
+    inc_votes = req.body.inc_votes
+    if (req.body.inc_votes === undefined) {
+        inc_votes = 0
+    };
     if (typeof req.body.inc_votes !== 'number') {
-        inc_votes = 0;
-    } else {
-        inc_votes = req.body.inc_votes
-    }
-    if (inc_votes === 0) return /*next(err) here so handler returns 400*/ res.status(404).send({ msg: 'Cannot increment by that value, check your input' });
-    console.log(inc_votes);
+        res.status(400).send({ msg: 'wrong input value' })
+    };
+
     updateComment(inc_votes, req.params.comment_id)
         .then(([comment]) => {
-            if (!comment) return res.status(404).send({ msg: 'comment not found' });
+            if (!comment) res.status(404).send({ msg: 'comment not found' });
             return res.status(200).send({ comment: comment });
         })
         .catch(next);

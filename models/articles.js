@@ -10,7 +10,7 @@ exports.fetchArticles = ({
     topic
 }) => {
     return connection
-        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
+        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes', 'articles.body')
         .from('articles')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
@@ -32,11 +32,11 @@ exports.fetchArticles = ({
 
 exports.fetchArticleByID = (id) => {
     return connection
-        .select('articles.article_id', 'articles.author', 'articles.created_at', 'articles.title', 'articles.topic', 'articles.votes')
-        .from('articles')
+        ('articles')
+        .select('articles.*')
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
+        .where({ 'articles.article_id': id })
         .groupBy('articles.article_id')
-        .where('articles.article_id', id)
         .count({ comment_count: 'comments.comment_id' });
 };
 
@@ -50,7 +50,7 @@ exports.updateArticle = (inc_votes, article_id) => {
 
 
 exports.fetchcommentsByID = (
-    id, /*remember to call in controller with variables*/
+    id,
     sort_by = 'created_at',
     order = 'desc') => {
     return connection
@@ -58,8 +58,7 @@ exports.fetchcommentsByID = (
         .from('comments')
         .where('comments.article_id', id.article_id)
         .modify((query) => {
-            query.orderBy('comments.' + `${sort_by}`, order || 'asc')
-            //returning all but article id?
+            query.orderBy('comments.' + `${sort_by}`, order || 'asc');
         });
 };
 

@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const apiRouter = require('./routers/api');
-const { handle500 } = require('./errors/index');
+const { handle400s } = require('./errors/index');
 
 
 
@@ -14,8 +14,14 @@ app.all('/*', (req, res, next) => {
     res.status(404).send({ msg: 'Route not found' })
 });
 
-app.use(handle500);
 
+app.use(handle400s);
+
+app.use((err, req, res, next) => {
+    res.status(500).send({ msg: 'Internal Server Error' });
+  });
+
+  
 module.exports = app;
 
 

@@ -7,8 +7,6 @@ exports.handle400s = (err, req, res, next) => {
   if (err.code === '23505') res.status(422).send({ msg: 'topic Already Exists' });
  
   else next(err);
-
-  //dry and change to specificity
 };
 
 exports.routeNotFound = (req, res) => {
@@ -19,14 +17,7 @@ exports.routeNotFound = (req, res) => {
 
 
 exports.handle405 = (req, res) => {
-  //const errorCodes = {
-  //'23502': 'Method not allowed,
-  // '23p02: 'ise
-  //}
-  //if (err.code === '23502') {etc}
-  // //{ msg: errorCodes[err.coode] }
-  // if (errorCodes[err.codes]) {
-  //next(err); to pass err to handle 500 below or whatever
+
   res.status(405).send({ msg: 'METHOD not allowed' });
   next(err);
 };

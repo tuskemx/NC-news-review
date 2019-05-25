@@ -42,6 +42,7 @@ describe('/api', () => {
                         'topic',
                         'created_at',
                         'votes',
+                        'body',
                         'comment_count');
                 });
         });
@@ -81,10 +82,10 @@ describe('/api', () => {
         });
     });
     describe('/articles', () => {
-        it('GET: invalid input for sort_by throws correct error', () => {
+        it('GET: invalid input for sort_by throws 400 error', () => {
             return request(app)
                 .get('/api/articles?sort_by=not-a-column')
-                .expect(404)
+                .expect(400)
             // and error message find out how to specificy response on tests
 
         });
@@ -117,7 +118,7 @@ describe('/api', () => {
                 .get('/api/articles/2')
                 .expect(200)
                 .then((response) => {
-                    
+
                     expect(response.body.article).to.have.keys(
                         'author',
                         'title',
@@ -125,7 +126,8 @@ describe('/api', () => {
                         'topic',
                         'created_at',
                         'votes',
-                        'comment_count',
+                        'body',
+                        'comment_count'
                     );
 
                     expect(response.body.article.article_id).to.equal(2);
@@ -152,6 +154,7 @@ describe('/api', () => {
                         'topic',
                         'created_at',
                         'votes',
+                        'body',
                         'comment_count',
                     );
 
@@ -164,7 +167,7 @@ describe('/api', () => {
         it("responds to GET requests with a single article and comment count", () => {
             return request(app)
                 .get('/api/articles/1000')
-                .expect(400)
+                .expect(404)
         })
     })
     describe('/:article_id', () => {
@@ -197,11 +200,12 @@ describe('/api', () => {
         it('GET status: 404 as article has no comments', () => {
             return request(app)
                 .get('/api/articles/2/comments')
-                .expect(404)
+                .expect(200)
                 .then((response) => {
-               
+
+
                     // expect(response.body.comments).to.equal(response.body.comments);
-                    // expect(response.body.comments).to.eql([])
+                    expect(response.body.comments).to.eql([])
                 })
         })
     });
@@ -326,7 +330,7 @@ describe('/api', () => {
                 .expect(200)
                 .then((response) => {
 
-                    
+
                     expect(response.body.comment.votes).to.eql(600);
                     // no article id 
 
@@ -362,7 +366,7 @@ describe('/api', () => {
                     .expect(204)
                     .then((response) => {
 
-                        
+
                         expect(response.body).to.eql({});
                         // no article id 
 
