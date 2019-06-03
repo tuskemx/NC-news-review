@@ -22,7 +22,9 @@ exports.patchComment = (req, res, next) => {
 exports.deleteComment = (req, res, next) => {
     deleteCommentModel(req.params.comment_id)
         .then((deleteRow) => {
-            if (deleteRow === 0 || typeof deleteRow !== 'number') return res.status(404).send({ status: 404, msg: `${req.params.comment_id}` + 'does not exist' });
+            if (deleteRow === 0 || typeof deleteRow !== 'number') {
+                return res.status(404).send({ status: 404, msg: `${req.params.comment_id}` + 'does not exist' });
+            }
             else return res.status(204).send({ msg: `${req.params.comment_id}` + 'deleted' });
         })
         .catch(next);

@@ -1,14 +1,7 @@
 const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel } = require('../models/articles');
 
 exports.getArticles = (req, res, next) => {
-    // const author = req.query.author;
-    // const sort_by = req.query.sort_by;
-    // const order = req.query.order;
-    // const { limit, sort_by, p, order, author, topic } = req.query;
-    //dont have to pass sep values because of query in model?
-
-    // const topic = req.query.topic;
-    fetchArticles(req.query)
+    fetchArticles(req.query) //why can the query be split in the model here?
         .then((articles) => {
 
             if (articles.length > 0) res.status(200).send({ articles: articles })
