@@ -15,7 +15,6 @@ exports.fetchArticles = ({
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
         .groupBy('articles.article_id')
-        .knex('articles')
         .where(remaining)
         .count({ total_articles: 'articles.article_id' })
 
