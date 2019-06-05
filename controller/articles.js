@@ -8,7 +8,6 @@ const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postC
 exports.getArticles = (req, res, next) => {
     Promise.all([fetchArticleCount(req.query), fetchArticles(req.query)]) //why can the query be split in the model here?
         .then(([totalcount, articles]) => {
-            console.log(totalcount, '***');
             //promise all count and then all articles
             if (articles.length > 0) res.status(200).send({ totalcount, articles: articles })
             else res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?

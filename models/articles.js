@@ -18,7 +18,7 @@ exports.fetchArticleCount = ({ topic, author }) => {
 }
 
 exports.fetchArticles = ({
-    limit = 5,
+    limit = 10,
     p = 1,
     sort_by = 'articles.created_at',
     order = 'desc',
