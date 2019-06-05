@@ -1,29 +1,38 @@
-const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel } = require('../models/articles');
+const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel, fetchArticleCount } = require('../models/articles');
+
+
+
+
+
+
+exports.getArticleCount = (req, res, next) => {
+console.log(req);
+    fetchArticleCount()
+        .then((res) => {
+            console.log(res);
+        }).catch(next);
+}
+
+
+
+
+
 
 exports.getArticles = (req, res, next) => {
     fetchArticles(req.query) //why can the query be split in the model here?
         .then((articles) => {
-
+         //promise all count and then all articles
             if (articles.length > 0) res.status(200).send({ articles: articles })
             else res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
         }).catch(next);
 };
 
-// .catch(err => {
-//     if (err.code === '22P02') {
-//         err = { code: 400, message: 'Article id invalid!'}
-//     } else if (err.code !== 404) {
-//         err = {code: 500, message: `Unhandled error at getCommentsByArticle: ${err.code} ${err.message}`}
-//     };
-//     next(err);
-// })
-// };
 
 exports.getArticleByID = (req, res, next) => {
 
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
-            if (article === undefined) res.status(404).send({ msg: 'article not found '})
+            if (article === undefined) res.status(404).send({ msg: 'article not found ' })
             let idtoNum = Number(req.params.article_id); // makes sure its string of number
             if (req.params.article_id < 0 || typeof idtoNum !== 'number') {
                 res.status(400).send({ msg: 'Article not found check your input' });
@@ -70,7 +79,7 @@ exports.getcommentsByID = (req, res, next) => {
 
 
 exports.postComment = (req, res, next) => {
-    
+
     const { article_id } = req.params;
     let idnum = Number(article_id)
     if (idnum > 30 || typeof idnum !== 'number') res.status(422).send({ msg: 'unprocessable entity 422' });

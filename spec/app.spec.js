@@ -47,6 +47,17 @@ describe('/api', () => {
                 });
         });
     });
+    describe.only('/articles', () => {
+        it('GET: should have total_count key', () => {
+            return request(app)
+                .get('/api/articles')
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).to.have.keys(
+                        'totalcount');
+                });
+        });
+    });
     describe('/articles', () => {
         it('GET: author query filters articles by user value specified in query', () => {
             return request(app)

@@ -1,6 +1,17 @@
 const connection = require('../db/connection');
 
 
+
+
+exports.fetchArticleCount = () => {
+    return connection
+        ('articles')
+        .select('articles.*')
+        .where('articles.article_id')
+        .count({ totalcount: 'articles.article_id' });
+
+}
+
 exports.fetchArticles = ({
     limit = 12,
     p = 1,
@@ -15,13 +26,7 @@ exports.fetchArticles = ({
         .leftJoin('comments', 'comments.article_id', 'articles.article_id')
         .count({ comment_count: 'comments.comment_id' })
         .groupBy('articles.article_id')
-        .where(remaining)
-        .count({ total_articles: 'articles.article_id' })
-
-
         .limit(limit)
-        // .offset((p - 1 * limit)
-        // .limit(limit)
         .modify((query) => {
             if (author) query.where('articles.author', author);
             if (sort_by) query.orderBy(sort_by, order);
