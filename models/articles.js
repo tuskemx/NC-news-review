@@ -3,17 +3,22 @@ const connection = require('../db/connection');
 
 
 
-exports.fetchArticleCount = () => {
+exports.fetchArticleCount = ({ topic, author }) => {
     return connection
-        ('articles')
-        .select('articles.*')
-        .where('articles.article_id')
-        .count({ totalcount: 'articles.article_id' });
+        .from('articles')
+        .count({ totalcount: 'articles.article_id' })
+        .modify((query) => {
+            if (topic) query.where('articles.topic', topic);
+            if (author) query.where('articles.author', author);
+        })
+        .then(([totalcount]) => {
+            return +totalcount.totalcount
+        })
 
 }
 
 exports.fetchArticles = ({
-    limit = 12,
+    limit = 5,
     p = 1,
     sort_by = 'articles.created_at',
     order = 'desc',

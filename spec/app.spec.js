@@ -53,6 +53,7 @@ describe('/api', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then((response) => {
+                    console.log(response.body);
                     expect(response.body.articles).to.have.keys(
                         'totalcount');
                 });

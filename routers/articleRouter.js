@@ -7,7 +7,7 @@ const { handle405 } = require('../errors/index');
 
 articleRouter.route('/')
     .get(getArticles)
-    .get(getArticleCount)
+    // .get(getArticleCount)
     .all(handle405);
 
 articleRouter.route('/:article_id')
