@@ -533,7 +533,7 @@ describe('/api', () => {
               request(app).get('/api').expect(200));
             });
             describe('OTHER METHODS', () => {
-              it('responds to invalid method requests with 405 method not allowed', () => request
+              it('responds to invalid method requests with 405 method not allowed', () => request(app)
                 .put('/api')
                 .expect(405)
                 .then((response) => {
