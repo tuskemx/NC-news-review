@@ -12,9 +12,10 @@ exports.getTopics = (req, res, next) => {
 
 
 exports.postTopicController = (req, res, next) =>
-  postTopicModel(req, res)
-    .then((postedTopic) => {
-      console.log(postedTopic);
+
+  postTopicModel(req.body)
+    .then(([postedTopic]) => {
+      console.log([postedTopic]);
       if (!postedTopic) return res.status(400).send({ msg: 'Unable to insert topic' });
       return res.status(201).send({
         postedTopic
