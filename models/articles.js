@@ -83,6 +83,15 @@ exports.postCommentModel = (req, article_id) => {
         .returning('*');
 };
 
+exports.postArticleModel = (title, body, topic, author) => connection('articles')
+  .insert({
+    title,
+    body,
+    topic,
+    author,
+  })
+  .returning('*');
+
 
 
 

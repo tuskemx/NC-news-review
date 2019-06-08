@@ -122,6 +122,27 @@ describe('/api', () => {
                 });
         });
     });
+    describe('POST', () => {
+        it('responds to POST requests with the posted article', () => {
+          const testArticle = {
+            title: 'testTitle',
+            body: 'testBody',
+            topic: 'mitch',
+            author: 'butter_bridge',
+          };
+          return request
+            .post('/api/Articles')
+            .send(testArticle)
+            .expect(201)
+            .then((response) => {
+              expect(response.body.article).to.include({
+                title: 'testTitle',
+                body: 'testBody',
+                topic: 'mitch',
+                author: 'butter_bridge',
+              });
+            });
+        });
 
     // should accept queries sort_by / order / author / topic
     describe('/api/:articles_id', () => {
@@ -454,5 +475,6 @@ describe('/api', () => {
                 });
 
         });
+        
     });
 });

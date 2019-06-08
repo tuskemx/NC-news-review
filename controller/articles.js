@@ -1,4 +1,4 @@
-const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel, fetchArticleCount } = require('../models/articles');
+const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel, fetchArticleCount, postArticleModel } = require('../models/articles');
 
 
 
@@ -78,6 +78,17 @@ exports.postComment = (req, res, next) => {
                 res.status(201).send({ comment: comm });
         }).catch(next);
 }
+
+exports.postArticleController = (req, res, next) => {
+    const {
+      title, body, topic, author,
+    } = req.body;
+    return postArticleModel(title, body, topic, author)
+      .then(([article]) => {
+        res.status(201).send({ article });
+      })
+      .catch(next);
+  };
 
 
 
