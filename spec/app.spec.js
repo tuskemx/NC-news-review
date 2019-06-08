@@ -529,7 +529,8 @@ describe('/api', () => {
 
         describe.only('/', () => {
             describe('GET', () => {
-              it('returns a JSON describing all the available endpoints on the API ', () => request.get('/api').expect(200));
+              it('returns a JSON describing all the available endpoints on the API ', () => 
+              request(app).get('/api').expect(200));
             });
             describe('OTHER METHODS', () => {
               it('responds to invalid method requests with 405 method not allowed', () => request

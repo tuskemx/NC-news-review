@@ -4,7 +4,7 @@ const articleRouter = require('../routers/articleRouter')
 const commentRouter = require('../routers/commentRouter');
 const usersRouter = require('../routers/usersRouter')
 const { handle400s } = require('../errors/index')
-const sendApiInfo = require('../controllers/api');
+const sendApiInfo = require('../controller/api');
 
 
 
