@@ -480,4 +480,63 @@ describe('POST', () => {
     });
 
 })
+describe('/topics', () => {
+    // GET
+    it('responds to GET requests with an array of topics', () => request
+      .get('/api/topics')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.fetchedTopics).to.be.an('array');
+        expect(response.body.fetchedTopics[0]).to.have.keys(
+          'description',
+          'slug',
+        );
+      }));
+
+    // POST
+    it('responds to POST requests with an array of topics', () => {
+      const testTopic = { description: '123', slug: 'test' };
+      return request
+        .post('/api/topics')
+        .send(testTopic)
+        .expect(201)
+        .then((response) => {
+          expect(response.body.postedTopic).to.eql({
+            description: '123',
+            slug: 'test',
+          });
+        });
+    });
+    it('responds to invalid POST request (duplicate slug) with 422 status and message: Topic Already Exists', () => {
+      const testTopic = { description: '123', slug: 'mitch' };
+      return request
+        .post('/api/topics')
+        .send(testTopic)
+        .expect(422)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Topic Already Exists');
+        });
+    });
+    it('responds to invalid POST request (if body is missing description property) with 400 status and message: Topic Description Required', () => {
+      const testTopic = { slug: 'testslug' };
+      return request
+        .post('/api/topics')
+        .send(testTopic)
+        .expect(422)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Topic Description Required');
+        });
+    });
+    // OTHER METHODS
+    it('responds to invalid method requests with 405 method not allowed', () => {
+      const testTopic = { description: '123', slug: 'test' };
+      return request
+        .patch('/api/topics')
+        .send(testTopic)
+        .expect(405)
+        .then((response) => {
+          expect(response.body.msg).to.eql('Method Not Allowed');
+        });
+    });
+  });
 })
