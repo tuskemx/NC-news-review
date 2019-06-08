@@ -507,7 +507,7 @@ describe('/api', () => {
         })
     })
 
-    describe.only('/topics', () => {
+    describe('/topics', () => {
         it('responds to POST requests with an array of topics', () => {
             const testTopic = { description: '1234', slug: 'test' };
             return request(app)
@@ -523,6 +523,24 @@ describe('/api', () => {
                 });
 
         })
+    })
+})
+
+
+        describe.only('/', () => {
+            describe('GET', () => {
+              it('returns a JSON describing all the available endpoints on the API ', () => request.get('/api').expect(200));
+            });
+            describe('OTHER METHODS', () => {
+              it('responds to invalid method requests with 405 method not allowed', () => request
+                .put('/api')
+                .expect(405)
+                .then((response) => {
+                  expect(response.body.msg).to.eql('Method Not Allowed');
+                }));
+            });
+          });
+        
         // it('responds to invalid POST request (duplicate slug) with 422 status and message: Topic Already Exists', () => {
         //     const testTopic = { description: '123', slug: 'mitch' };
         //     return request(app)
@@ -554,5 +572,4 @@ describe('/api', () => {
         //             expect(response.body.msg).to.eql('Method Not Allowed');
         //         });
         // });
-    });
-})
+
