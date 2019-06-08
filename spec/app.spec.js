@@ -507,7 +507,7 @@ describe('/api', () => {
         })
     })
 
-    describe('/topics', () => {
+    describe.only('/topics', () => {
         it('responds to POST requests with an array of topics', () => {
             const testTopic = { description: '1234', slug: 'testing' };
             return request(app)
@@ -515,7 +515,7 @@ describe('/api', () => {
                 .send(testTopic)
                 .expect(201)
                 .then((response) => {
-                    console.log(response);
+                    console.log(response.body);
                     expect(response.body.postedTopic).to.eql({
                         description: '1234',
                         slug: 'testing',
