@@ -5,6 +5,7 @@ exports.fetchTopics = () => {
 };
 
 exports.postTopicModel = (topicData) => {
+    console.log(topicData);
     return connection('topics')
         .insert(topicData)
         .returning('*');
