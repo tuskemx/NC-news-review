@@ -219,6 +219,17 @@ describe('/api', () => {
         });
 
     })
+    describe.only('api/articles/3', () => {
+        it('DELETE 204 ARTICLE ID`', () => {
+            return request(app)
+                .delete('/api/articles/4')
+                .expect(204)
+                .then((response) => {
+                    console.log(response, "deleted test");
+                })
+        })
+    });
+    
     describe('/articles/:article_id/comments', () => {
         it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
             return request(app)

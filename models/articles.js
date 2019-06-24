@@ -62,11 +62,14 @@ exports.updateArticle = (inc_votes, article_id) => {
 };
 
 exports.deleteArticleModel = (article_id) => {
+    
     return connection('articles')
-      .where({ article_id })
-      .delete();
-  
+      .where('article_id', article_id)
+      .del()
+    
   };
+
+
 
 
 

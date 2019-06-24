@@ -28,11 +28,7 @@ exports.getArticleByID = (req, res, next) => {
         }).catch(next);
 };
 
-// if (req.body.inc_votes === undefined) {
-//     res.status(400).send({ msg: 'Vote Not Found' });
-//   } else if (typeof req.body.inc_votes !== 'number') {
-//     res.status(400).send({ msg: 'Vote Not Valid Number' });
-//   } else {
+
 exports.updateArticleCont = (req, res, next) => {
     inc_votes = req.body.inc_votes;
     if (inc_votes === undefined || typeof inc_votes !== 'number') {
@@ -93,11 +89,12 @@ exports.postArticleController = (req, res, next) => {
 
 
 exports.deleteArticle = (req, res, next) => {
-    deleteCommentModel(req.params.article_id)
-        .then((res) => {
-            return res.status(204).send({ statis: 204, msg: "article deleted" })
-        }).catch(next);
-
+    deleteArticleModel(req.params.article_id)
+        .then((deleted) => {
+            if (deleted === 1) {
+                res.sendStatus(204);
+            } else res.sendStatus(400);
+        }).catch(next)
 }
 
 
