@@ -1,4 +1,4 @@
-const { articleData, commentData, topicData, userData } = require('../data/test-data/index');
+const { articleData, commentData, topicData, userData } = require('../data');
 const { formatDate, formatComments, createRef } = require('../../formattingfunctions');
 
 
@@ -21,11 +21,11 @@ exports.seed = function (knex, Promise) {
       const articleRef = createRef(articleRows, 'title', 'article_id');
       const formattedComments = formatComments(commentData, articleRef);
       const dateComments = formatDate(formattedComments);
-      
+
       // console.log(dateComments);
       const insertedComments = knex('comments')
         .insert(dateComments)
-          .returning('*');
+        .returning('*');
 
       return Promise.all([articleRows, insertedComments]);
     });
