@@ -61,6 +61,13 @@ exports.updateArticle = (inc_votes, article_id) => {
         .returning('*');
 };
 
+exports.deleteArticleModel = (article_id) => {
+    return connection('articles')
+      .where({ article_id })
+      .delete();
+  
+  };
+
 
 
 exports.fetchcommentsByID = (
@@ -91,6 +98,8 @@ exports.postArticleModel = (title, body, topic, author) => connection('articles'
     author,
   })
   .returning('*');
+
+
 
 
 

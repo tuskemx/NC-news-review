@@ -8,7 +8,8 @@
     "GET /api/articles/:article_id": "Responds with an article object based on ID",
     "PATCH /api/articles/:article_id": "Request body accepts an object { inc_votes: newVote } to increment vote",
     "GET /api/articles/:article_id/comments": "Responds with an array of comments for the given article_id",
-    "POST /api/articles/:article_id/comments": "Request body accepts an object"
+    "POST /api/articles/:article_id/comments": "Request body accepts an object",
+    "DELETE /api/article/:article_id": "Responds with status 204 and no content"
   },
   "apiComments": {
     "PATCH /api/comments/:comment_id": "Request body accepts an object { inc_votes: newVote } to increment vote",

@@ -507,7 +507,7 @@ describe('/api', () => {
         })
     })
 
-    describe.only('/topics', () => {
+    describe('/topics', () => {
         it('responds to POST requests with an array of topics', () => {
             const testTopic = { description: '1234', slug: 'testing' };
             return request(app)

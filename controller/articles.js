@@ -1,4 +1,4 @@
-const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel, fetchArticleCount, postArticleModel } = require('../models/articles');
+const { fetchArticles, fetchArticleByID, updateArticle, fetchcommentsByID, postCommentModel, fetchArticleCount, postArticleModel, deleteArticleModel } = require('../models/articles');
 
 
 
@@ -81,16 +81,36 @@ exports.postComment = (req, res, next) => {
 
 exports.postArticleController = (req, res, next) => {
     const {
-      title, body, topic, author,
+        title, body, topic, author,
     } = req.body;
     return postArticleModel(title, body, topic, author)
-      .then(([article]) => {
-        res.status(201).send({ article });
-      })
-      .catch(next);
-  };
+        .then(([article]) => {
+            res.status(201).send({ article });
+        })
+        .catch(next);
+};
+
+
+
+exports.deleteArticle = (req, res, next) => {
+    deleteCommentModel(req.params.article_id)
+        .then((res) => {
+            return res.status(204).send({ statis: 204, msg: "article deleted" })
+        }).catch(next);
+
+}
 
 
 
 
 
+//   exports.deleteComment = (req, res, next) => {
+//     deleteCommentModel(req.params.comment_id)
+//         .then((deleteRow) => {
+//             if (deleteRow === 0 || typeof deleteRow !== 'number') {
+//                 return res.status(404).send({ status: 404, msg: `${req.params.comment_id}` + 'does not exist' });
+//             }
+//             else return res.status(204).send({ msg: `${req.params.comment_id}` + 'deleted' });
+//         })
+//         .catch(next);
+// }
