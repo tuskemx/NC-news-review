@@ -89,7 +89,7 @@ exports.postArticleController = (req, res, next) => {
 
 
 exports.deleteArticle = (req, res, next) => {
-    deleteArticleModel(req.params.article_id)
+    return deleteArticleModel(req.params.article_id)
         .then((deleted) => {
             if (deleted === 1) {
                 res.sendStatus(204);
