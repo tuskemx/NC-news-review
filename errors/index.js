@@ -1,16 +1,16 @@
 exports.handle400s = (err, req, res, next) => {
-  if (err.code === '23503') res.status(400).send({ msg: 'Bad Request' });
-  if (err.code === '22P02') res.status(400).send({ msg: 'Invalid Article ID' });
-  if (err.code === '22003') res.status(404).send({ msg: 'Article Not Found' });
-  if (err.code === '23505') res.status(422).send({ msg: 'Topic Already Exists' });
-  if (err.code === '23502') res.status(422).send({ msg: 'Topic Description Required' });
-  if (err.code === '42703') res.status(400).send({ msg: 'Invalid Sort_By Query' });
+  if (err.code === '23503') res.status(400).send({ message: 'Bad Request' });
+  if (err.code === '22P02') res.status(400).send({ message: 'Invalid Article ID' });
+  if (err.code === '22003') res.status(404).send({ message: 'Article Not Found' });
+  if (err.code === '23505') res.status(422).send({ message: 'Topic Already Exists' });
+  if (err.code === '23502') res.status(422).send({ message: 'Topic Description Required' });
+  if (err.code === '42703') res.status(400).send({ message: 'Invalid Sort_By Query' });
   else next(err);
 };
 
 exports.routeNotFound = (req, res) => {
   if (err.code === 404) {
-    res.status(404).send({ msg: 'Route Not Found' });
+    res.status(404).send({ message: 'Route Not Found' });
   } else {
     next(err);
   };
