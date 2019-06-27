@@ -53,7 +53,6 @@ describe('/api', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then((response) => {
-                    console.log(response.body);
                     expect(response.body).to.have.keys(
                         "totalcount", "articles");
                 });
@@ -112,13 +111,23 @@ describe('/api', () => {
                 });
         });
     });
+    describe.only('/articles', () => {
+        it('GET: author query sorts by user value topic', () => {
+            return request(app)
+                .get('/api/articles?topic=mit')
+                .expect(404)
+                .then((response) => {
+                    console.log(response.body);
+                });
+        });
+    });
     describe('/articles', () => {
         it('GET: query for author that doenst exist should 404', () => {
             return request(app)
                 .get('/api/articles?author=not-an-author')
                 .expect(404)
                 .then((response) => {
-                    expect(response.body.msg).to.eql('Articles Not Found');
+                    expect(response.body.message).to.eql('Articles Not Found');
                 });
         });
     });
@@ -219,17 +228,16 @@ describe('/api', () => {
         });
 
     })
-    describe.only('api/articles/3', () => {
+    describe('api/articles/3', () => {
         it('DELETE 204 ARTICLE ID`', () => {
             return request(app)
                 .delete('/api/articles/4')
                 .expect(204)
                 .then((response) => {
-                    console.log(response, "deleted test");
                 })
         })
     });
-    
+
     describe('/articles/:article_id/comments', () => {
         it('GET status: 200. Responds with status 200 and an array of comments for the given `article_id`', () => {
             return request(app)
@@ -498,7 +506,6 @@ describe('/api', () => {
                 .get('/api/topics')
                 .expect(200)
                 .then((response) => {
-                    console.log(response);
                     expect(response.body.topics).to.be.an('array');
                     expect(response.body.topics[0]).to.have.keys(
                         'description',
@@ -526,7 +533,6 @@ describe('/api', () => {
                 .send(testTopic)
                 .expect(201)
                 .then((response) => {
-                    console.log(response.body);
                     expect(response.body.postedTopic).to.eql({
                         description: '1234',
                         slug: 'testing',
