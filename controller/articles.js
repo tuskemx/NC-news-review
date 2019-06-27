@@ -10,7 +10,7 @@ exports.getArticles = (req, res, next) => {
         .then(([totalcount, articles]) => {
             //promise all count and then all articles
             if (articles.length > 0) res.status(200).send({ totalcount, articles: articles })
-            else res.status(404).send({ msg: 'Articles Not Found' }) //said in notes to make own model for checking author?
+            else res.status(404).send({ message: 'Articles Not Found', status: 404 }) //said in notes to make own model for checking author?
         }).catch(next);
 };
 
@@ -19,10 +19,10 @@ exports.getArticleByID = (req, res, next) => {
 
     fetchArticleByID(req.params.article_id)
         .then(([article]) => {
-            if (article === undefined) res.status(404).send({ msg: 'article not found ' })
+            if (article === undefined) res.status(404).send({ message: 'article not found', status: 404 })
             let idtoNum = Number(req.params.article_id); // makes sure its string of number
             if (req.params.article_id < 0 || typeof idtoNum !== 'number') {
-                res.status(400).send({ message: 'Article not found check your input' });
+                res.status(400).send({ message: 'Article not found check your input', status: 400 });
                 //add 404 
             } else res.status(200).send({ article: article });
         }).catch(next);
@@ -37,7 +37,7 @@ exports.updateArticleCont = (req, res, next) => {
     updateArticle(inc_votes, req.params.article_id)
         .then(([article]) => {
             if (article === undefined) {
-                res.status(400).send({ message: 'Article Not Found' });
+                res.status(400).send({ message: 'Article Not Found', status: 400 });
             } else
                 res.status(200).send({ article });
         })
@@ -51,7 +51,7 @@ exports.getcommentsByID = (req, res, next) => {
     const order = req.query.order;
     fetchArticleByID(req.params.article_id).then((article) => {
         if (article.length === 0) {
-            res.status(404).send({ message: 'Article Not Found' });
+            res.status(404).send({ message: 'Article Not Found', status: 404 });
         }
         fetchcommentsByID(id, sortBy, order).then((comments) => {
             res.status(200).send({ comments: comments });
@@ -65,11 +65,11 @@ exports.postComment = (req, res, next) => {
 
     const { article_id } = req.params;
     let idnum = Number(article_id)
-    if (idnum > 30 || typeof idnum !== 'number') res.status(422).send({ message: 'unprocessable entity 422' });
+    if (idnum > 30 || typeof idnum !== 'number') res.status(422).send({ message: 'unprocessable entity 422', status: 422 });
     postCommentModel(req.body, article_id)
         .then(([comm]) => {
             if (!comm || comm === undefined) {
-                res.status(400).send({ message: 'Article Not Found' });
+                res.status(400).send({ message: 'Article Not Found', status: 400 });
             } else
                 res.status(201).send({ comment: comm });
         }).catch(next);
@@ -92,8 +92,8 @@ exports.deleteArticle = (req, res, next) => {
     return deleteArticleModel(req.params.article_id)
         .then((deleted) => {
             if (deleted === 1) {
-                res.sendStatus(204);
-            } else res.sendStatus(400);
+                res.status(204).send({ message: 'article posted', status: 204 })
+            } else res.status(400).send({ message: 'not deleted', status: 400 })
         }).catch(next)
 }
 
@@ -105,9 +105,9 @@ exports.deleteArticle = (req, res, next) => {
 //     deleteCommentModel(req.params.comment_id)
 //         .then((deleteRow) => {
 //             if (deleteRow === 0 || typeof deleteRow !== 'number') {
-//                 return res.status(404).send({ status: 404, msg: `${req.params.comment_id}` + 'does not exist' });
+//                 return res.status(404).send({ status: 404, message: `${req.params.comment_id}` + 'does not exist' });
 //             }
-//             else return res.status(204).send({ msg: `${req.params.comment_id}` + 'deleted' });
+//             else return res.status(204).send({ message: `${req.params.comment_id}` + 'deleted' });
 //         })
 //         .catch(next);
 // }

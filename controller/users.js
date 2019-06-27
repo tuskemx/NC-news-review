@@ -3,7 +3,7 @@ const { fetchUserModel, fetchUsers, postUser } = require('../models/users');
 exports.getUsers = (req, res, next) => {
   fetchUsers()
     .then((users) => {
-      if (!users) return Promise.reject({ status: 404 });
+      if (!users) return Promise.reject({ message: "no users", status: 404 });
       return res.send({ users })
     })
     .catch(next);
@@ -14,7 +14,7 @@ exports.getUsers = (req, res, next) => {
 exports.getUser = (req, res, next) => {
   fetchUserModel(req.params.username)
     .then(([user]) => {
-      if (!user || user === undefined) return res.status(404).send({ message: 'User ID not found' });
+      if (!user || user === undefined) return res.status(404).send({ message: 'User ID not found', status: 404 });
       return res.send({ user });
     })
     .catch(next);
@@ -24,9 +24,9 @@ exports.postUser = (req, res, next) => { //added recently extra
   const { username, avatar_url, name } = req.body;
   console.log(req.body);
   if (typeof username !== 'string') {
-    res.status(400).send({ message: 'Invalid Username' });
+    res.status(400).send({ message: 'Invalid Username', status: 400 });
   } else if (typeof name !== 'string') {
-    res.status(400).send({ message: 'Invalid Name' });
+    res.status(400).send({ message: 'Invalid Name', status: 400 });
   } else {
     return postUser(username, avatar_url, name)
       .then(([postedUser]) => {
