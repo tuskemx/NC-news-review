@@ -7,7 +7,7 @@ exports.patchComment = (req, res, next) => {
         inc_votes = 0
     };
     if (typeof req.body.inc_votes !== 'number') {
-        res.status(400).send({ msg: 'wrong input value' })
+        res.status(400).send({ message: 'wrong input value' })
     };
 
     updateComment(inc_votes, req.params.comment_id)
@@ -23,7 +23,7 @@ exports.deleteComment = (req, res, next) => {
     deleteCommentModel(req.params.comment_id)
         .then((deleteRow) => {
             if (deleteRow === 0 || typeof deleteRow !== 'number') {
-                return res.status(404).send({ status: 404, msg: `${req.params.comment_id}` + 'does not exist' });
+                return res.status(404).send({ status: 404, message: `${req.params.comment_id}` + 'does not exist' });
             }
             else return res.status(204).send({ msg: `${req.params.comment_id}` + 'deleted' });
         })
