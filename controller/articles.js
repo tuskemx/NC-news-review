@@ -10,7 +10,7 @@ exports.getArticles = (req, res, next) => {
         .then(([totalcount, articles]) => {
             //promise all count and then all articles
             if (articles.length > 0) res.status(200).send({ totalcount, articles: articles })
-            else res.status(404).send({ message: 'Articles Not Found', status: 404 }) //said in notes to make own model for checking author?
+            else res.status(200).send({ totalcount, articles: [] }) //said in notes to make own model for checking author?
         }).catch(next);
 };
 

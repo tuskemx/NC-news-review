@@ -111,7 +111,7 @@ describe('/api', () => {
                 });
         });
     });
-    describe.only('/articles', () => {
+    describe('/articles', () => {
         it('GET: author query sorts by user value topic', () => {
             return request(app)
                 .get('/api/articles?topic=mit')
