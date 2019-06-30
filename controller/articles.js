@@ -65,7 +65,7 @@ exports.postComment = (req, res, next) => {
 
     const { article_id } = req.params;
     let idnum = Number(article_id)
-    if (idnum > 30 || typeof idnum !== 'number') res.status(422).send({ message: 'unprocessable entity 422', status: 422 });
+    if (idnum > 500 || typeof idnum !== 'number') res.status(422).send({ message: 'unprocessable entity 422', status: 422 });
     postCommentModel(req.body, article_id)
         .then(([comm]) => {
             if (!comm || comm === undefined) {
