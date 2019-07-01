@@ -62,12 +62,12 @@ exports.updateArticle = (inc_votes, article_id) => {
 };
 
 exports.deleteArticleModel = (article_id) => {
-    
+
     return connection('articles')
-      .where('article_id', article_id)
-      .del()
-    
-  };
+        .where('article_id', article_id)
+        .del()
+
+};
 
 
 
@@ -94,13 +94,13 @@ exports.postCommentModel = (req, article_id) => {
 };
 
 exports.postArticleModel = (title, body, topic, author) => connection('articles')
-  .insert({
-    title,
-    body,
-    topic,
-    author,
-  })
-  .returning('*');
+    .insert({
+        title,
+        body,
+        topic,
+        author,
+    })
+    .returning('*');
 
 
 

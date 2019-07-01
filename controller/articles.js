@@ -79,7 +79,7 @@ exports.postArticleController = (req, res, next) => {
     const {
         title, body, topic, author,
     } = req.body;
-    return postArticleModel(title, body, topic, author)
+    postArticleModel(title, body, topic, author)
         .then(([article]) => {
             res.status(201).send({ article });
         })
@@ -89,10 +89,11 @@ exports.postArticleController = (req, res, next) => {
 
 
 exports.deleteArticle = (req, res, next) => {
-    return deleteArticleModel(req.params.article_id)
+    deleteArticleModel(req.params.article_id)
         .then((deleted) => {
+            console.log(deleted);
             if (deleted === 1) {
-                res.status(204).send({ message: 'article posted', status: 204 })
+                res.sendStatus(204);
             } else res.status(400).send({ message: 'not deleted', status: 400 })
         }).catch(next)
 }
